@@ -1,7 +1,7 @@
 {
   "name": "order-of-the-sinking-cost",
   "private": true,
-  "description": "Order of the Sinking Star 非官方简体中文无剧透进度查看器",
+  "description": "《沉星之序》非官方简体中文进度查看器：本地读取存档，查看进度、地图与解锁路线",
   "repository": "github:xrtimvan-code/order-of-the-sinking-cost-zh",
   "license": "MIT",
   "type": "module",

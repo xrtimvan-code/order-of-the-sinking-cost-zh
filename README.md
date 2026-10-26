@@ -1,14 +1,14 @@
-# Order of the Sinking Cost · 简体中文版 / Simplified Chinese Edition
+# 沉星之序进度查看器 · 简体中文版
 
-《Order of the Sinking Star》非官方、无剧透存档进度查看器的简体中文版本，基于 [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost)。
+《沉星之序》（Order of the Sinking Star）的非官方中文进度查看器。读取存档后，可查看剩余内容、可玩关卡和解锁路线。基于 [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost)。
 
 An unofficial Simplified Chinese localization of the spoiler-aware save progress viewer for *Order of the Sinking Star*, based on [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost).
 
 **[下载可用压缩包 / Download the portable ZIP](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/releases/latest)** · [中文使用说明](#中文使用说明) · [English guide](#english-guide) · [问题反馈 / Issues](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/issues)
 
-> 非官方项目，与游戏开发商、发行商及上游作者无隶属或背书关系。存档仅在浏览器本地读取，不会上传或修改。可达性推算存在局限，不能保证每一条建议都正确。
->
-> Unofficial project; not affiliated with or endorsed by the game's developers, publishers, or the upstream author. Saves are read locally in your browser and are not uploaded or modified. Reachability is approximate, and recommendations may be incorrect.
+存档仅在浏览器本地读取，不会上传或修改。
+
+Saves are read locally in your browser and are not uploaded or modified.
 
 ## 中文使用说明
 
@@ -16,7 +16,7 @@ An unofficial Simplified Chinese localization of the spoiler-aware save progress
 
 打开 [Releases](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/releases/latest)，在 **Assets** 中下载名称包含 `portable.zip` 的文件，例如 `order-of-the-sinking-cost-zh-v1.0.0-portable.zip`。
 
-**普通玩家不要下载 `Source code (zip)` 或 `Source code (tar.gz)`**：它们是源码，不含构建所需的全部生成数据，不能作为成品直接使用。
+请选择`portable.zip`成品包。页面自动生成的`Source code`压缩包供开发者使用。
 
 右键 ZIP →“全部解压”，将压缩包解压到任意自己可写入的文件夹，例如：
 
@@ -24,7 +24,7 @@ An unofficial Simplified Chinese localization of the spoiler-aware save progress
 D:\Tools\SinkingStarViewer\
 ```
 
-**不需要放进 Steam 游戏目录，也不要替换任何游戏文件。** 工具和游戏可以位于不同磁盘。不要直接在 ZIP 预览窗口里运行。
+工具和游戏可以放在不同磁盘，无需修改游戏文件。请先完整解压，再打开网页。
 
 压缩包包含：
 
@@ -50,7 +50,7 @@ D:\Tools\SinkingStarViewer\
 4. 若游戏使用了其他存档位置，选择实际包含存档子文件夹的目录。关键文件是 `Status.sokoban_status` 和 `overworld.history`；后者用于迷雾和世界状态。可选择整个存档根目录，也可选择包含这些文件的单个存档目录。
 5. 存档读取后，可在左上角切换不同存档。工具只申请读取权限，不会改写存档。
 
-**不要选择** `E:\steam\steamapps\common\Order of the Sinking Star`：这是游戏安装目录，不是存档目录。
+工具需要读取存档目录，无需访问Steam游戏安装目录。
 
 若文件夹选择器打不开，将存档文件夹从资源管理器拖入页面；也可以使用页面提供的“读取一次”选项。浏览器或嵌入环境可能限制持续读取。在一次性读取模式下，重新选择文件夹才能更新进度。
 
@@ -58,7 +58,7 @@ D:\Tools\SinkingStarViewer\
 
 工具可放在第二块屏幕或窗口中，游戏照常运行。支持持续读取的浏览器会在工具页面可见时，每隔几秒重新读取存档；也可以点击存档旁的 **↻**。显示的是游戏**已写入磁盘**的状态，可能晚于游戏中尚未保存的操作。
 
-工具运行期间无需联网；GitHub 和 WikiTactics 是外部链接，主动打开它们时需要网络。无需给工具访问游戏安装目录的权限。关卡数据已经包含在成品内；游戏大版本更新后请检查本项目是否发布了兼容版本。
+网页资源已包含在成品中，使用时无需联网。打开GitHub或WikiTactics链接需要网络。游戏更新后，如遇读取或进度显示问题，请检查是否有新版工具。
 
 ### 4. 功能怎么用
 
@@ -77,16 +77,9 @@ D:\Tools\SinkingStarViewer\
 
 “必需”“多选其一”“可选”表示关卡相对于所选目标的作用。解锁路线是模型建议，不是解谜答案，也不一定涵盖所有实际可行的走法。
 
-### 5. 为什么还有英文关卡名？
-
-`heroes1_1`、`mirror_2` 等是游戏内部标识，**不是乱码或汉化失败**。本次核对的官方 `en.localization`、`s-cn.localization` 均未提供这 920 个内部标识对应的正式关卡标题，因此本项目保留标识，避免编造“官方中文关卡名”，同时保持存档、搜索、链接与攻略对应。
-
-你不需要理解标识的字面意思：**点击条目看地图位置，再按中文区域、关卡状态和前置路线定位。** 区域名、称号、界面、状态及路线提示已汉化。地图底图里的英文美术字仍保持原样，高塔组合字母也保留；成就标题为查看器译名，未核对 Steam 官方简体中文标题。
-
-### 6. 隐私、兼容性与反馈
+### 5. 兼容性与反馈
 
 - 成品不会上传存档、修改游戏或存档，也没有账号系统。浏览器可能在本机保存显示偏好和经授权的文件夹句柄，持续读取仍受浏览器权限控制。
-- 无需共享存档即可使用。本地网页可以读取你明确选择的文件夹，请只使用可信来源的构建。
 - 此版面向桌面浏览器；Firefox、Safari 或受限环境可能只能单次读取。未读取 `overworld.history` 时，部分迷雾及可达性功能受限。
 - 模型无法完整模拟所有推移、镜面、光束及移动物体行为。游戏版本变化也可能造成读取或推算差异。
 - 反馈请使用 [Issues](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/issues)，附版本、浏览器、复现步骤及适当遮挡的截图。**不要公开上传完整存档、用户名、私人路径、凭据或整包游戏文件。**
@@ -128,10 +121,6 @@ Keep the viewer in another window or on a second screen while playing. With a li
 
 Drag to pan and scroll or use `+` / `−` to zoom. Other map layers become available when revealed. Counts with `+` indicate more hidden content, not a complete total. Required / One of several / Optional labels relate to the selected goal. Opening an external walkthrough may reveal spoilers beyond the viewer's controls.
 
-### English internal level identifiers
-
-Identifiers such as `heroes1_1` are retained deliberately. Neither supplied official localization file provides a title mapping for the viewer's 920 internal level identifiers. They remain stable for save matching, searching, links, and walkthrough references. **Select an entry to locate it on the map; you do not need to interpret the identifier literally.** Area labels, ranks, interface text, states, and route explanations are localized. English lettering baked into map artwork and tower combination letters remain unchanged. Achievement labels are viewer translations, not verified Steam Chinese titles.
-
 ### Privacy and limitations
 
 The release build reads selected saves locally and does not upload or modify them. The browser may remember display preferences and a folder handle on your device, subject to browser permissions. No game-installation access is needed to use a prebuilt release.
@@ -142,7 +131,9 @@ Report reproducible problems through [Issues](https://github.com/xrtimvan-code/o
 
 ## 开发构建 / Building from source
 
-需要 / Requires **Node.js 24** and npm, plus your own game files. Use `data/levels.package` and `data/strings/s-cn.localization` from the same game version. Do not commit raw game files or player saves.
+从源码构建需要Node.js 24、npm，以及自己游戏中的`data/levels.package`和`data/strings/s-cn.localization`，两份文件应来自同一游戏版本。
+
+Building requires Node.js 24, npm, and your own `data/levels.package` and `data/strings/s-cn.localization` from the same game version.
 
 ```powershell
 npm ci
@@ -151,7 +142,9 @@ npm run data
 npm run build:standalone
 ```
 
-首次生成数据可能耗时数分钟。/ Initial data generation can take several minutes.
+首次生成数据可能耗时数分钟。
+
+Initial data generation can take several minutes.
 
 | Command | Purpose |
 | --- | --- |
@@ -161,15 +154,16 @@ npm run build:standalone
 | `npm test -- --run --hookTimeout=120000` | 运行测试；缺少真实存档的用例会跳过 / Tests; real-save cases skip when fixtures are unavailable |
 | `npm run typecheck` / `npm run lint` | 类型与静态检查 / Type checking and lint |
 
-详见 / More details: [scripts/README.md](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/scripts/README.md), [localization verification](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/docs/LOCALIZATION.md), [upstream README](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/README.upstream.md). Technical reference documents remain in English. `npm run deploy` and `wrangler.jsonc` retain the upstream Cloudflare configuration; configure your own account/domain before deploying. They are not needed for portable use.
+构建流程见[scripts/README.md](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/scripts/README.md)。技术文档保留英文。`npm run deploy`使用上游Cloudflare配置，自行部署前需修改账号和域名。
 
-## 来源、许可与维护 / Attribution, licensing and maintenance
+See [scripts/README.md](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/scripts/README.md) for the build pipeline. Technical documentation remains in English. Configure your own account and domain before using the upstream Cloudflare deployment configuration.
 
-- **Upstream software:** Pavel Djundik / xPaw, [order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost), MIT. This repository retains upstream history and copyright notices.
-- **Chinese localization and release packaging:** maintained under [xrtimvan-code](https://github.com/xrtimvan-code).
-- **Game-related data and artwork:** derived assets and short labels inherited from upstream or generated locally from the game. Game names, artwork, localization, and other game content remain subject to their respective rights. The MIT software license does not claim to relicense those materials. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-- **WikiTactics mapping:** upstream incorporates data from [joric/ootss](https://github.com/joric/ootss); its Unlicense notice is included under `LICENSES/`.
+## 来源与许可 / Attribution and license
 
-本项目不分发游戏可执行文件、原始关卡包、完整语言包或玩家存档。AI 用于上游实现、逆向分析和本汉化；测试及审阅不能排除所有错误。软件按 [MIT 许可证](LICENSE)“按原样”提供，不附带保证。社区反馈与修复以维护者可用时间为限，不承诺更新周期或长期游戏版本兼容性。
+本项目基于Pavel Djundik（xPaw）的[order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost)，保留原作者署名和Git历史；简体中文版本由[xrtimvan-code](https://github.com/xrtimvan-code)维护。上游项目说明见[README.upstream.md](https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/blob/main/README.upstream.md)。
 
-This project does not distribute the game executable, raw level packages, full localization files, or player saves. AI was used for the upstream implementation and reverse engineering, as well as this localization. Testing and review cannot eliminate all errors. Software is provided **as is**, without warranty, under the [MIT License](LICENSE). Maintenance is on a best-effort basis, without a promised update schedule or ongoing compatibility with future game versions.
+软件代码采用[MIT许可证](LICENSE)。地图、图标和游戏相关文本的权利归各自权利人，详见[第三方来源说明](THIRD_PARTY_NOTICES.md)。本项目不附带游戏可执行文件、原始关卡包、完整语言包或玩家存档，与游戏开发商及发行商无隶属关系。
+
+Based on Pavel Djundik's (xPaw) [order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost), with upstream attribution and history preserved. The Simplified Chinese edition is maintained by [xrtimvan-code](https://github.com/xrtimvan-code).
+
+Software code is licensed under the [MIT License](LICENSE). Game-related artwork and text remain subject to their respective rights; see [third-party notices](THIRD_PARTY_NOTICES.md). This project is not affiliated with the game's developers or publishers and does not distribute game executables, raw level packages, full localization files, or player saves.

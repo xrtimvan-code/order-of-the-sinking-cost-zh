@@ -18,4 +18,4 @@ Do not upload real player saves, credentials, complete game files, or unredacted
 
 ## Scope and privacy
 
-The portable viewer reads user-selected saves in the local browser. It does not intentionally upload or modify saves. Reports concerning unintended network requests, unsafe rendering of save-derived text, or unintended file access are in scope. This statement describes intended behavior and is not a guarantee that the software is free of vulnerabilities.
+The portable viewer reads user-selected saves in the local browser. It does not intentionally upload or modify saves. Reports concerning unintended network requests, unsafe rendering of save-derived text, or unintended file access are in scope.

@@ -1,21 +1,13 @@
-# Localization verification / 本地化核对
+# Localization / 本地化
 
-Verified on 2026-10-27 using user-supplied game files; this is not a claim of compatibility with every game version.
+界面及路线提示采用简体中文。区域名称与称号使用游戏的官方简体中文文本，分别由区域键和称号键对应。
 
-| Check | Result |
-| --- | --- |
-| English localization keys | 935 |
-| Simplified Chinese localization keys | 931 |
-| Used area labels matched to official Chinese text | 82 / 82 |
-| Used area keys present in both supplied files | 82 / 82 |
-| Rank names matched to official Chinese text | 6 / 6 |
-| Overworld level identifiers checked | 920 |
-| Official level title mappings found under those identifiers or as exact values | 0 |
+Area labels and rank names use the game's official Simplified Chinese text, matched by localization key. Viewer controls and route explanations are translated separately.
 
-The four English-only keys are unrelated game sign/system strings that the viewer does not display. They do not leave a required area or rank label untranslated. Neither language file provides a title mapping for the viewer's internal level identifiers. Technical documentation from upstream likewise describes level names as internal names. Therefore those identifiers are retained rather than presenting invented translations as official titles.
+## 维护说明 / Maintenance
 
-英文文件比中文文件多出的四个键属于工具不显示的游戏告示/系统文本，不涉及本工具使用的区域或称号。本次逐键核对没有发现需修正的官方区域名或称号；工具自行生成的界面及路线文案则属于本项目翻译，不是从游戏中直接照搬。
+- 数据生成使用`data/strings/s-cn.localization`。更新游戏数据时，应使用同一游戏版本的文件。
+- 修改显示文字时保留存档标识、链接和防剧透判断，并核对中英文README中的操作说明。
+- 游戏相关文本的权利说明见[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
 
-Achievement titles remain viewer translations rather than verified Steam Simplified Chinese titles. Baked map lettering is unchanged. H/M/S/B tower letters are retained for correspondence with upstream resources. See the README for usage and limitations.
-
-Full localization files and raw game packages are not committed or distributed. The software's MIT license does not relicense the original game content; see `THIRD_PARTY_NOTICES.md`.
+Build data from the same game version, preserve internal identifiers and spoiler checks when editing display text, and keep both README guides consistent with the UI.

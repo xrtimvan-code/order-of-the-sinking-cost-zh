@@ -8,9 +8,9 @@ This project is derived from [xPaw/order-of-the-sinking-cost](https://github.com
 
 ## Game-related materials
 
-*Order of the Sinking Star* is a game by Thekla, Inc. Game names, trademarks, artwork, localization text, and other game materials remain subject to their respective rights. This repository is not affiliated with or endorsed by the game's developers, publishers, or the upstream viewer author.
+《沉星之序》（*Order of the Sinking Star*）is a game by Thekla, Inc. Game names, trademarks, artwork, localization text, and other game materials remain subject to their respective rights. This repository is not affiliated with or endorsed by the game's developers, publishers, or the upstream viewer author.
 
-The upstream repository includes map and icon images and schema information derived from the game. Builds also embed derived progression/navigation data and short labels required by the viewer. The localized build reads area labels and ranks from the official Simplified Chinese localization supplied locally by the user. These materials are identified separately from the viewer's software code: **the MIT software license is not a grant of ownership in, or a blanket relicensing of, game content.**
+The upstream repository includes map and icon images and schema information derived from the game. Builds also embed derived progression/navigation data and short labels required by the viewer. The localized build reads area labels and ranks from the official Simplified Chinese localization included with the game. The MIT software license covers the viewer code; it does not relicense game content.
 
 本项目继承了上游的地图、图标及结构信息，构建时还会嵌入进度计算所需的派生数据与简短显示名称。游戏相关内容的权利归其相应权利人，MIT 软件许可不表示本项目有权将游戏内容整体重新许可。
 
@@ -30,6 +30,6 @@ Development dependencies are listed in `package.json` and locked in `package-loc
 
 ## Rights-related inquiries
 
-For an attribution or rights-related concern, open a concise issue in this repository identifying the material, its location, and the basis of your concern. Do not include confidential documents or personal information in a public issue. This channel is for review and discussion; it does not make a legal determination or promise any particular resolution.
+For an attribution or rights-related concern, open a concise issue in this repository identifying the material, its location, and the basis of your concern. Do not include confidential documents or personal information in a public issue.
 
-如对署名或相关材料权利有疑问，可在本仓库提出说明，标明材料位置、涉及内容和依据。请勿在公开 Issue 中提交机密文件或个人信息。维护者将结合提供的信息核查，不对处理结果或时限作保证。
+如对署名或相关材料权利有疑问，可在本仓库提出说明，标明材料位置、涉及内容和依据。请勿在公开 Issue 中提交机密文件或个人信息。维护者会据此核查。

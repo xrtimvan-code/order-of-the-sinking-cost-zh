@@ -5,7 +5,7 @@
 First public Simplified Chinese release, based on upstream `xPaw/order-of-the-sinking-cost` at commit `c46e073`.
 
 - Translate controls, goals, states, map tooltips, prerequisite routes, counters, accessibility labels, and save-reading diagnostics.
-- Verify all 82 used area labels and six ranks against the supplied official English/Simplified Chinese files; retain internal level identifiers where no official title mapping exists.
+- Use official Simplified Chinese area labels and rank names.
 - Preserve upstream progression logic, spoiler filtering, and read-only save handling.
 - Add a self-contained portable HTML, bilingual usage documentation, source attribution, third-party notices, and contribution/security guidance.
 

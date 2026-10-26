@@ -18,11 +18,11 @@ Thank you for helping improve this unofficial viewer. Bug reports, translation c
 ## Pull requests
 
 1. Explain the user-facing problem and keep changes focused.
-2. Preserve internal save identifiers, spoiler filtering, read-only save handling, and HTML escaping. Do not invent official localized titles.
+2. Preserve internal save identifiers, spoiler filtering, read-only save handling, and HTML escaping. Keep terminology consistent with the game.
 3. Do not commit generated `data/` outputs, raw game files, personal saves, secrets, `dist/`, or `node_modules/`.
 4. For behavior changes, add a meaningful focused test. For wording changes, update relevant existing assertions and verify the resulting UI.
 5. Run `npm run typecheck`, `npm run lint`, and appropriate tests. Use `npm test -- --run --hookTimeout=120000` for the full suite. Build with `npm run build:standalone` when changing UI or packaging.
-6. State the checks performed and any fixtures or environments that were unavailable. Do not claim tests that were not run.
+6. Include test results and note any checks that could not be run.
 
 By submitting a contribution, you confirm you have the right to submit it and intend it to be distributed under this project's MIT software license, subject to separately identified third-party materials. No separate contributor license agreement is currently required.
 
