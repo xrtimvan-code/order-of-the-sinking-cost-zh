@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security reports / 安全问题
+    url: https://github.com/xrtimvan-code/order-of-the-sinking-cost-zh/security/policy
+    about: Read the security reporting policy / 查看私密安全报告方式

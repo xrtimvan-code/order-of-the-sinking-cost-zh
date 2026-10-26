@@ -2,7 +2,7 @@
   "name": "order-of-the-sinking-cost",
   "private": true,
   "description": "Order of the Sinking Star 非官方简体中文无剧透进度查看器",
-  "repository": "github:xPaw/order-of-the-sinking-cost",
+  "repository": "github:xrtimvan-code/order-of-the-sinking-cost-zh",
   "license": "MIT",
   "type": "module",
   "scripts": {

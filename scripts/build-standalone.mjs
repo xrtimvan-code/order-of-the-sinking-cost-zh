@@ -32,9 +32,11 @@ html = html.replace(
 );
 html = html.replace(/<link\b[^>]*\brel="stylesheet"[^>]*>/, () => `<style>${css}</style>`);
 const license = readFileSync(resolve(root, 'LICENSE'), 'utf8');
+const notices = readFileSync(resolve(root, 'THIRD_PARTY_NOTICES.md'), 'utf8');
+const mappingLicense = readFileSync(resolve(root, 'LICENSES/ootss-UNLICENSE.txt'), 'utf8');
 html = html.replace(
     '<!doctype html>',
-    `<!doctype html>\n<!--\nUnofficial Simplified Chinese localization of https://github.com/xPaw/order-of-the-sinking-cost\n${license}-->`,
+    `<!doctype html>\n<!--\nUnofficial Simplified Chinese localization of https://github.com/xPaw/order-of-the-sinking-cost\n${license}\n${notices}\n${mappingLicense}-->`,
 );
 writeFileSync(resolve(dist, 'standalone.html'), html);
 console.log(`dist/standalone.html (${(Buffer.byteLength(html) / 1024 / 1024).toFixed(1)} MiB)`);

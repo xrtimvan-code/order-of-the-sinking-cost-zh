@@ -1,0 +1,28 @@
+name: Bug report / 问题反馈
+description: Report a reproducible viewer issue or translation problem / 反馈可复现问题或翻译错误
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not upload full saves, game files, credentials, or private paths. Mark and collapse spoilers.
+        请勿上传完整存档、游戏文件、凭据或私人路径；请标注并折叠剧透内容。
+  - type: input
+    id: version
+    attributes:
+      label: Viewer version / 工具版本
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS, browser and game version / 系统、浏览器与游戏版本
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps, expected result and actual result / 复现步骤、预期与实际结果
+      description: Use a minimal description and redact screenshots / 请简明描述并遮挡截图中的个人信息
+    validations:
+      required: true
