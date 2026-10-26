@@ -1,4 +1,4 @@
-// The sidebar: the save with its progress, No spoilers and where the hero is, the goals with the areas under
+// The sidebar: the save with its progress, 防剧透 and where the hero is, the goals with the areas under
 // Completionist, the kinds of mark to find on the map and the save's stats (VIEWER.md "The page (viewer)")
 import { PROG } from './data.ts';
 import { $, apolloDate, apolloSeconds, duration, escapeHtml, setButtonPressed } from './util.ts';
@@ -61,20 +61,19 @@ function saveMetaHtml(status: Status): string {
     return `<div class="muted meta" ${attributes}>${rank} · ${playTime}</div>`;
 }
 
-// the solved bar and the No spoilers switch, with a note when the build has no fog data to hide things by
+// the solved bar and the 防剧透 switch, with a note when the build has no fog data to hide things by
 function progressHtml(model: ProgressModel | null | undefined): string {
     if (!model) return '';
 
-    const spoilTitle =
-        'On: levels, areas, towers and achievements still under fog are left out. Off: everything is shown';
-    const spoilSwitch = `<button class="spoil" id="pgSpoil" title="${spoilTitle}"><span class="knob"></span>No spoilers</button>`;
+    const spoilTitle = '开启：隐藏迷雾中的关卡、区域、高塔和成就。关闭：显示全部内容';
+    const spoilSwitch = `<button class="spoil" id="pgSpoil" title="${spoilTitle}"><span class="knob"></span>防剧透</button>`;
 
     let fogNote = '';
     if (model.noFog) {
-        let message = 'This build has no fog data';
-        if (PROG.fog) message = 'Fog needs overworld.history';
+        let message = '此版本缺少迷雾数据';
+        if (PROG.fog) message = '迷雾数据需要 overworld.history';
         let onlyEntered = '';
-        if (model.hide) onlyEntered = '; only entered levels are shown';
+        if (model.hide) onlyEntered = '；仅显示已进入的关卡';
         fogNote = `<div class="muted">${message}${onlyEntered}</div>`;
     }
 
@@ -91,7 +90,7 @@ function campaignHtml(model: ProgressModel | null | undefined, campaignList: str
     // with saves open the campaign list takes the open button's place; its last entry opens another folder
     const opened = realFiles().length > 0;
     if (!opened) {
-        const note = '<div class="muted meta">Example: a new game</div>';
+        const note = '<div class="muted meta">示例：新游戏</div>';
         return `<div class="camp empty">${note}${progress}${inLevelHtml()}</div>${errors}`;
     }
 
@@ -99,19 +98,19 @@ function campaignHtml(model: ProgressModel | null | undefined, campaignList: str
     let live = '';
     if (dirHandle) {
         const folderName = escapeHtml(dirHandle.name);
-        const watched = '(it is re-read every few seconds while this page is visible)';
-        const title = `Re-read the save folder “${folderName}” ${watched}`;
-        const attributes = `id="refreshBtn" class="plain live" title="${title}" aria-label="Re-read the save folder"`;
+        const watched = '（页面可见时，每隔几秒重新读取）';
+        const title = `重新读取存档文件夹“${folderName}”${watched}`;
+        const attributes = `id="refreshBtn" class="plain live" title="${title}" aria-label="重新读取存档文件夹"`;
         live = `<button ${attributes}><span class="dot"></span>↻</button>`;
     }
 
     // saves read once say so, and how to make them live
     if (!dirHandle) {
         let howToKeepLive = '';
-        if (dropsLive) howToKeepLive = ' · drop the folder here to keep it live';
+        if (dropsLive) howToKeepLive = ' · 将文件夹拖到此处可持续更新';
 
-        const title = `These files were read once; new progress shows after the folder is opened again${howToKeepLive}`;
-        live = `<span class="muted snap" title="${title}">snapshot</span>`;
+        const title = `这些文件仅读取了一次；重新打开文件夹后才会显示新进度${howToKeepLive}`;
+        live = `<span class="muted snap" title="${title}">单次读取</span>`;
     }
 
     let meta = '';
@@ -132,11 +131,11 @@ function campaignPickerHtml(campaignList: string[]): string {
         })
         .join('');
 
-    const openOther = `<button class="plain" role="menuitem" data-camp="${OPEN_OTHER}">Open another folder…</button>`;
+    const openOther = `<button class="plain" role="menuitem" data-camp="${OPEN_OTHER}">打开其他文件夹…</button>`;
     const menu = `<div class="cmenu" id="campMenu" role="menu" hidden>${items}<hr>${openOther}</div>`;
 
     const name = escapeHtml(campaignLabel(state.camp ?? ''));
-    const attributes = 'id="campBtn" aria-haspopup="menu" aria-expanded="false" title="Switch campaign"';
+    const attributes = 'id="campBtn" aria-haspopup="menu" aria-expanded="false" title="切换存档"';
     const button = `<button class="plain" ${attributes}><span class="n">${name}</span>${CHEVRON}</button>`;
     return `<div class="cpick">${button}${menu}</div>`;
 }
@@ -168,7 +167,7 @@ function onCampaignMenuClick(event: Event): void {
 
     state.camp = camp;
     state.campPicked = true;
-    void showSave('Working out your save…');
+    void showSave('正在分析存档…');
 }
 
 // a click anywhere else, or Escape, closes the campaign menu

@@ -151,7 +151,7 @@ test('a bad terminator, an index out of range and a type without a schema throw'
     const positionField = SCHEMA.base.fields.find((field) => field.n === 'position.x')!;
     expect(() =>
         decodeBlob(new Writer().u16(BASE_VERSION).u16(1).u16(positionField.i).u32(0).u8(0xfe).done(), 'Guy', false),
-    ).toThrow(/bad terminator 0xfe after position\.x/);
+    ).toThrow(/字段 position\.x 后的结束标记 0xfe 无效/);
     const fieldCount = SCHEMA.types.Guy.fields!.length;
     expect(() =>
         decodeBlob(
@@ -163,8 +163,10 @@ test('a bad terminator, an index out of range and a type without a schema throw'
             'Guy',
             false,
         ),
-    ).toThrow(new RegExp(`field index ${fieldCount} out of range for Guy`));
-    expect(() => decodeBlob(new Writer().u16(BASE_VERSION).u16(1).done(), 'No_Such_Type', false)).toThrow(/no schema/);
+    ).toThrow(new RegExp(`字段索引 ${fieldCount} 超出 Guy 的范围`));
+    expect(() => decodeBlob(new Writer().u16(BASE_VERSION).u16(1).done(), 'No_Such_Type', false)).toThrow(
+        /缺少实体类型/,
+    );
 });
 
 // Older blobs count only the fields their version has; a struct member's leaves come and go with the member
@@ -184,9 +186,9 @@ test('an older Monster blob has no default_transmute_tint_color leaves', () => {
     expect(decodeBlob(one(16, tint.i, tint.sz!), 'Monster', false).fields[0].f.n).toBe(
         'default_transmute_tint_color.x',
     );
-    expect(() => decodeBlob(one(15, tint.i, tint.sz!), 'Monster', false)).toThrow(/out of range for Monster/);
+    expect(() => decodeBlob(one(15, tint.i, tint.sz!), 'Monster', false)).toThrow(/超出 Monster 的范围/);
     expect(decodeBlob(one(15, spawner.i, spawner.sz!), 'Monster', false).fields[0].f.n).toBe(spawner.n);
-    expect(() => decodeBlob(one(14, spawner.i, spawner.sz!), 'Monster', false)).toThrow(/out of range/);
+    expect(() => decodeBlob(one(14, spawner.i, spawner.sz!), 'Monster', false)).toThrow(/超出/);
 });
 
 test('a v13 base skips the scale leaves, so later base fields move down three', () => {

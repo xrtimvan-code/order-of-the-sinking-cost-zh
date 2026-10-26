@@ -189,14 +189,14 @@ function describe(context: GoalsContext, id: number, below: number): string | nu
 
     if (node.t === 't') {
         if (!towerShown(context, node.id)) return null;
-        return `${towerName(progress.towers[node.id].t)} · ${towerLeft(context, node.id)} to go`;
+        return `${towerName(progress.towers[node.id].t)} · 还需 ${towerLeft(context, node.id)} 个`;
     }
 
     if (node.t === 'g') {
         if (!context.gateShown(node.id)) return null;
         const place = context.gatePlace(node.id);
-        if (!place) return `opens ${freezerNoun(node.id)}`;
-        return `opens ${freezerNoun(node.id)} ${place}`;
+        if (!place) return `开启${freezerNoun(node.id)}`;
+        return `开启${freezerNoun(node.id)} ${place}`;
     }
 
     if (node.t === 'l') {
@@ -204,8 +204,8 @@ function describe(context: GoalsContext, id: number, below: number): string | nu
 
         const belowNode = graph.node[below];
         const unlocked = belowNode?.t === 'l' && levels[node.id].req.includes(belowNode.id);
-        if (unlocked) return `unlocks ${levels[node.id].n}`;
-        return `opens the way to ${levels[node.id].n}`;
+        if (unlocked) return `解锁 ${levels[node.id].n}`;
+        return `开辟前往 ${levels[node.id].n} 的路线`;
     }
 
     if (node.t === 'e') {
@@ -227,8 +227,8 @@ function routesText(context: GoalsContext, goal: GoalView, id: number): string {
         const node = graph.node[route];
         return !node || context.stepShown(node);
     });
-    if (shownRoutes.length >= 2) return ` · one of ${shownRoutes.length} routes`;
-    if (routes.length >= 2) return ' · one of several routes';
+    if (shownRoutes.length >= 2) return ` · ${shownRoutes.length} 条路线之一`;
+    if (routes.length >= 2) return ' · 多条路线之一';
     return '';
 }
 
@@ -322,14 +322,14 @@ function goalOf(context: GoalsContext, level: number): string {
 
     let ending = '';
     if (step.ending != null && endings[step.ending].shown) {
-        ending = `Toward ${achievementName(endings[step.ending].name)}`;
+        ending = `推进${achievementName(endings[step.ending].name)}`;
     }
 
     const shownTowers = step.towers.filter(([tower]) => towerShown(context, tower));
     const closestTower = shownTowers.toSorted((first, second) => first[1] - second[1])[0];
     let towerText = '';
     if (closestTower) {
-        towerText = `${towerName(progress.towers[closestTower[0]].t)} · ${closestTower[1]} to go`;
+        towerText = `${towerName(progress.towers[closestTower[0]].t)} · 还需 ${closestTower[1]} 个`;
     }
 
     if (ending && towerText) return `${ending} · ${towerText}`;
@@ -349,15 +349,15 @@ function goalOf(context: GoalsContext, level: number): string {
         const [kind, id] = required[0];
         let more = '';
         if (required.length > 1) more = ` +${required.length - 1}`;
-        if (kind === 'l') return `Required ${levels[id].n}${more}`;
+        if (kind === 'l') return `需要 ${levels[id].n}${more}`;
 
         const place = context.gatePlace(id);
         let placeNote = '';
         if (place) placeNote = ' · ' + place;
-        return `Required ${freezerNoun(id)}${placeNote}${more}`;
+        return `需要${freezerNoun(id)}${placeNote}${more}`;
     }
 
-    if (roleOf('l', level) === 'req') return 'Required level';
+    if (roleOf('l', level) === 'req') return '必需关卡';
     return '';
 }
 
@@ -413,9 +413,9 @@ function baseGoal(
 function antipodeGoal(context: GoalsContext, raw: AntipodeGoal, endingPlan: Set<number> | null): GoalView {
     const tower = context.progress.towers[raw.tower];
     const name = towerName(tower.t);
-    const goal = baseGoal(raw, name, [Math.min(tower.solvedNormal, tower.req), tower.req], 'levels');
+    const goal = baseGoal(raw, name, [Math.min(tower.solvedNormal, tower.req), tower.req], '关卡');
     goal.next = null;
-    if (tower.active && !raw.done) goal.next = `Antipode teleporter · ${name}`;
+    if (tower.active && !raw.done) goal.next = `对映传送点 · ${name}`;
     goal.onPlan = raw.done || !endingPlan || endingPlan.has(raw.targets[0]);
     return goal;
 }
@@ -484,15 +484,15 @@ function wayRoute(route: number): { area: number; tower: number } {
 // a sky Way: named by its area while the area is named, else by the tower Sign it leads to
 function wayStageGoal(context: GoalsContext, raw: StageGoal): GoalView {
     const { area, tower } = wayRoute(raw.route!);
-    if (context.areaShown(area)) return baseGoal(raw, areaName(PROG.areas[area]), null, 'levels');
-    return baseGoal(raw, unnamedWayName(context.progress.towers[tower].t), null, 'levels');
+    if (context.areaShown(area)) return baseGoal(raw, areaName(PROG.areas[area]), null, '关卡');
+    return baseGoal(raw, unnamedWayName(context.progress.towers[tower].t), null, '关卡');
 }
 
 // a stage that is no tower: named by its area, its level or its sky Way
 function stageGoal(context: GoalsContext, raw: StageGoal): GoalView {
     if (raw.route !== undefined) return wayStageGoal(context, raw);
-    if (raw.area !== undefined) return baseGoal(raw, areaName(PROG.areas[raw.area]), null, 'levels');
-    const goal = baseGoal(raw, context.levels[raw.level!].n, null, 'levels');
+    if (raw.area !== undefined) return baseGoal(raw, areaName(PROG.areas[raw.area]), null, '关卡');
+    const goal = baseGoal(raw, context.levels[raw.level!].n, null, '关卡');
     goal.level = raw.level;
     return goal;
 }
@@ -514,7 +514,7 @@ function addStages(context: GoalsContext, goal: GoalView, rawChildren: Array<Tow
 }
 
 function endingGoal(context: GoalsContext, raw: EndingGoal): GoalView {
-    const goal = baseGoal(raw, achievementName(raw.name), null, 'steps');
+    const goal = baseGoal(raw, achievementName(raw.name), null, '步骤');
     const { left, fogged } = stepsLeft(context, raw);
     goal.left = left;
     goal.fogged = fogged;
@@ -529,22 +529,22 @@ function endingGoal(context: GoalsContext, raw: EndingGoal): GoalView {
 
 function towerGoal(context: GoalsContext, raw: TowerGoal): GoalView {
     const tower = context.progress.towers[raw.tower];
-    return baseGoal(raw, towerName(tower.t), [Math.min(tower.solvedNormal, tower.req), tower.req], 'levels');
+    return baseGoal(raw, towerName(tower.t), [Math.min(tower.solvedNormal, tower.req), tower.req], '关卡');
 }
 
 function achievementGoal(context: GoalsContext, raw: AchievementGoal): GoalView {
     const rule = context.achievementRule(raw.name);
     let goalProgress: FoundOfTotal = [raw.done ? 1 : 0, 1];
-    let unit = 'achievements';
+    let unit = '成就';
     let tower: number | undefined;
     if (rule?.tower) {
         goalProgress = [Math.min(rule.tower.solvedNormal, rule.tower.req), rule.tower.req];
-        unit = 'levels';
+        unit = '关卡';
         tower = context.progress.towers.indexOf(rule.tower);
     } else if (rule?.levels) {
         const solvedLevels = rule.levels.filter((level) => context.progress.state[level] === 'solved');
         goalProgress = [solvedLevels.length, rule.levels.length];
-        unit = 'levels';
+        unit = '关卡';
     }
 
     if (raw.done) goalProgress = [goalProgress[1], goalProgress[1]];
@@ -578,7 +578,7 @@ function completionistGoal(context: GoalsContext, raw: LadderGoalFields): GoalVi
     const { progress, levels } = context;
     const shown = levels.filter((level, i) => !progress.hidden[i]).length;
     const fogged = shown < levels.length;
-    return baseGoal(raw, achievementName('COMPLETIONIST'), [progress.solved, shown], 'levels', fogged);
+    return baseGoal(raw, achievementName('COMPLETIONIST'), [progress.solved, shown], '关卡', fogged);
 }
 
 // the listed goals as the page shows them
@@ -590,8 +590,8 @@ function ladderOf(context: GoalsContext): GoalView[] {
         if (raw.kind === 'achievements') {
             return parentGoal(
                 raw,
-                'Achievements',
-                'achievements',
+                '成就',
+                '成就',
                 (child) => !context.achievementHidden(child.name),
                 (child) => achievementGoal(context, child),
             );

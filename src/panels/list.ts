@@ -27,13 +27,13 @@ interface RowBlock {
 const GROUP_ORDER: ListGroup[] = ['playable', 'blocked', 'locked', 'solved'];
 
 const GROUP_HEADS: Record<ListGroup, string> = {
-    playable: 'Play now',
-    blocked: 'Not reachable yet',
-    locked: 'Locked',
-    solved: 'Solved',
+    playable: '现在可玩',
+    blocked: '暂时无法到达',
+    locked: '未解锁',
+    solved: '已解开',
 };
 
-export const NEAR = '<span class="muted" title="Outside every area box; grouped with the nearest area">≈ </span>';
+export const NEAR = '<span class="muted" title="位于所有区域范围之外；归入最近的区域">≈ </span>';
 
 // a search row is the level alone; a goal row also tells the level's role and where it leads
 function rowHtml(context: PanelContext, levelIndex: number, tab: boolean): string {
@@ -133,13 +133,13 @@ function rowsHtml(context: PanelContext, blocks: RowBlock[], tab: number | undef
 
 function emptyHtml(context: PanelContext): string {
     const goal = context.goal;
-    if (!goal) return '<div class="none muted">Working out the goals…</div>';
+    if (!goal) return '<div class="none muted">正在分析目标…</div>';
 
-    if (context.searching() || context.narrowed()) return '<div class="none muted">No levels match</div>';
-    if (context.filters.solved) return '<div class="none muted">No solved levels yet.</div>';
-    if (goal.done) return `<div class="none muted">${escapeHtml(goal.label)} is done.</div>`;
-    if (goal.fogged) return '<div class="none muted">Nothing to show yet; more is under fog.</div>';
-    return `<div class="none muted">No levels left for ${escapeHtml(goal.label)}.</div>`;
+    if (context.searching() || context.narrowed()) return '<div class="none muted">没有符合条件的关卡</div>';
+    if (context.filters.solved) return '<div class="none muted">尚未解开任何关卡。</div>';
+    if (goal.done) return `<div class="none muted">${escapeHtml(goal.label)}已完成。</div>`;
+    if (goal.fogged) return '<div class="none muted">暂无可显示的内容；更多内容仍在迷雾中。</div>';
+    return `<div class="none muted">${escapeHtml(goal.label)}没有剩余关卡。</div>`;
 }
 
 // the chips above the list: the tower and area chips, removable; a search ignores them and hides them
@@ -157,13 +157,13 @@ function chipsHtml(context: PanelContext): string {
     let html = '';
     if (tower) {
         const name = towerEmblemHtml(tower) + escapeHtml(towerName(tower.t));
-        const attributes = 'data-clear-tower title="Show every tower"';
+        const attributes = 'data-clear-tower title="显示所有高塔"';
         html += `<button class="plain chip rm" ${attributes}>${name} ${closeMark}</button>`;
     }
 
     if (area) {
         const name = areaEmblemHtml(area) + escapeHtml(areaName(area));
-        const attributes = 'data-clear-area title="Show every area"';
+        const attributes = 'data-clear-area title="显示所有区域"';
         html += `<button class="plain chip rm" ${attributes}>${name} ${closeMark}</button>`;
     }
 
@@ -178,14 +178,13 @@ function countHtml(context: PanelContext): string {
 
     const count = context.list.length;
     if (context.searching()) {
-        let noun = 'levels';
-        if (count === 1) noun = 'level';
+        const noun = '个关卡';
         return `<span>${count} ${noun}</span>`;
     }
 
     const solvedShown = context.filters.solved;
-    let quantity = `${count} left`;
-    if (solvedShown) quantity = `${count} solved`;
+    let quantity = `剩余 ${count} 个`;
+    if (solvedShown) quantity = `已解开 ${count} 个`;
 
     const toggle = (id: string, solved: boolean, label: string): string => {
         let onClass = '';
@@ -194,8 +193,8 @@ function countHtml(context: PanelContext): string {
         return `<button${onClass} ${attributes}>${label}</button>`;
     };
 
-    const todoButton = toggle('pgTodo', false, 'To do');
-    const solvedButton = toggle('pgSolved', true, 'Solved');
+    const todoButton = toggle('pgTodo', false, '待完成');
+    const solvedButton = toggle('pgSolved', true, '已解开');
     const keys = `<span class="keys">${todoButton}${solvedButton}</span>`;
     return `<span><b>${escapeHtml(goal.label)}</b> · ${quantity}</span>${keys}`;
 }
@@ -228,7 +227,7 @@ function drawGoalList(context: PanelContext): void {
     }
 
     let foot = '';
-    if (context.model.hiddenLevelCount) foot = `<div class="foot muted">More levels under fog</div>`;
+    if (context.model.hiddenLevelCount) foot = `<div class="foot muted">更多关卡仍在迷雾中</div>`;
 
     $('#pgRows').innerHTML = (rows || emptyHtml(context)) + cages + foot;
     $('#pgCount').innerHTML = countHtml(context);

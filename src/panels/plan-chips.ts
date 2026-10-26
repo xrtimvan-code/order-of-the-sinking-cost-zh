@@ -74,9 +74,9 @@ export function levelPadHtml(progress: Pick<ShownProgress, 'state'>, levelIndex:
 }
 
 // a fogged level's chip carries only its index; revealing it draws the chip again with the name
-const FOG_CHIP = 'Level under fog';
+const FOG_CHIP = '迷雾中的关卡';
 
-export const FOG_TEXT = '<span class="muted">A level under fog</span>';
+export const FOG_TEXT = '<span class="muted">迷雾中的某个关卡</span>';
 
 export function levelChip(
     progress: Pick<ShownProgress, 'hidden' | 'state' | 'reach'>,
@@ -85,7 +85,7 @@ export function levelChip(
 ): string {
     const target = `${attr}="${levelIndex}" tabindex="0" role="button"`;
     if (progress.hidden[levelIndex]) {
-        return `<span class="chip spoiler" ${target} title="Click to reveal">${FOG_CHIP}</span>`;
+        return `<span class="chip spoiler" ${target} title="点击揭示（含剧透）">${FOG_CHIP}</span>`;
     }
 
     const levelState = progress.state[levelIndex];
@@ -95,7 +95,7 @@ export function levelChip(
 }
 
 export function towerNameHtml(context: PanelContext, towerIndex: number): string {
-    if (context.progress.towerHidden[towerIndex]) return '<span class="muted">A tower under fog</span>';
+    if (context.progress.towerHidden[towerIndex]) return '<span class="muted">迷雾中的某座高塔</span>';
     const tower = context.progress.towers[towerIndex];
     return towerEmblemHtml(tower) + escapeHtml(towerName(tower.t));
 }
@@ -106,19 +106,19 @@ export function towerNameHtml(context: PanelContext, towerIndex: number): string
  */
 export function signNeed(context: PanelContext, sign: SignRule): string {
     if (sign.rank) {
-        if (sign.rank === 255) return 'Any rank';
+        if (sign.rank === 255) return '任意称号';
 
         const achievement = rankAchievement(sign.rank);
-        if (achievement && context.model.achievementHidden(achievement)) return 'A higher rank';
-        return `Rank ${escapeHtml(RANKS[sign.rank] ?? sign.rank)} or higher`;
+        if (achievement && context.model.achievementHidden(achievement)) return '更高的称号';
+        return `称号达到${escapeHtml(RANKS[sign.rank] ?? sign.rank)}或更高`;
     }
 
     if (sign.tower != null && context.progress.towers[sign.tower]) {
-        return towerNameHtml(context, sign.tower) + ' activated';
+        return towerNameHtml(context, sign.tower) + '已激活';
     }
 
-    if (sign.gold) return `${context.progress.goldFound} / ${sign.gold} Antipode teleporters visited`;
-    return 'Sign';
+    if (sign.gold) return `已到访 ${context.progress.goldFound} / ${sign.gold} 个对映传送点`;
+    return '告示牌';
 }
 
 /** What a sign asks for, marked when it is read and led by "Read the sign" when its rule holds but it is not read. */
@@ -126,15 +126,15 @@ export function signText(context: PanelContext, sign: FreezerSign): string {
     const need = signNeed(context, sign);
     const state = signStateOf(context.progress, sign);
     if (state === 'read') return '✓ ' + need;
-    if (state === 'ready') return 'Read the sign · ' + need;
+    if (state === 'ready') return '阅读告示牌 · ' + need;
     return need;
 }
 
 /** How a Freezer with several options opens: with any of them or all of them. */
 export function gateMode(freezer: Freezer): string {
     if (optionCount(freezer) <= 1) return '';
-    if (freezer.or) return 'any of';
-    return 'all of';
+    if (freezer.or) return '满足任一条件';
+    return '满足全部条件';
 }
 
 /** A panel's role chip: the role of the thing for the goal, named with the goal. */
@@ -142,7 +142,7 @@ export function roleChipHtml(context: PanelContext, role: Role | null): string {
     if (!role || !context.goal) return '';
     const roleName = escapeHtml(ROLES[role][0]);
     const goalLabel = escapeHtml(context.goal.label);
-    return `<span class="chip">${roleDot(role)}${roleName} for ${goalLabel}</span>`;
+    return `<span class="chip">${roleDot(role)}${goalLabel}：${roleName}</span>`;
 }
 
 export const pick = (context: PanelContext, levels: number[]): string =>
@@ -191,7 +191,7 @@ export function gateChip(context: PanelContext, freezerIndex: number): string {
     let openNote = '';
     if (open) {
         tone = ' good';
-        openNote = ' (open)';
+        openNote = '（已开启）';
     }
 
     const place = gatePlaceSuffix(context, freezerIndex);
@@ -208,7 +208,7 @@ const roomShown = (context: PanelContext, roomIndex: number): boolean =>
 // the plan steps with no chip of their own: a gold room, the way onto a layer, a rank marker
 function otherStepText(context: PanelContext, node: PlanStep): string {
     if (node.t === 'p') {
-        return `Antipode teleporter · ${towerName(context.progress.towers[PROG.gold_rooms[node.id].tower].t)}`;
+        return `对映传送点 · ${towerName(context.progress.towers[PROG.gold_rooms[node.id].tower].t)}`;
     }
 
     if (node.t === 'a') return capitalized(wayTo(node.id));
@@ -248,10 +248,10 @@ function nodeChip(context: PanelContext, node: PlanStep): string {
 export function panelHead(context: PanelContext, title: string): string {
     let previous = '';
     if (context.back.length) {
-        previous = '<button class="plain" data-back title="Previous panel">↶ Previous</button>';
+        previous = '<button class="plain" data-back title="上一个面板">↶ 上一项</button>';
     }
 
-    const back = '<button class="plain" data-close title="Back to the list (Esc)">‹ Back</button>';
+    const back = '<button class="plain" data-close title="返回列表（Esc）">‹ 返回</button>';
     return `<div class="dtop">${back}${previous}</div><div class="hd"><b tabindex="-1">${title}</b></div>`;
 }
 
@@ -350,7 +350,7 @@ export function pathHtml(
     const alternatives = [...plan.nodes]
         .filter(([key, node]) => numbers.has(key) && node.alt !== undefined && node.alt > 1)
         .map(([, node]) => {
-            const note = `<span class="muted">1 of ${node.alt} options for</span>`;
+            const note = `<span class="muted">以下目标有 ${node.alt} 种方案，此处列出其中一种：</span>`;
             return `<div class="pth">${note} ${nodeChip(context, node)}</div>`;
         })
         .join('');
@@ -360,15 +360,13 @@ export function pathHtml(
     const notReachable = first.filter((node) => node.t === 'l' && !node.front);
     const needs = first.filter((node) => node.t !== 'l');
 
-    let plural = '';
-    if (numbers.size > 1) plural = 's';
-    let html = `<div class="h">Path · ${numbers.size} step${plural}</div>`;
-    html += line('Solve first', solveFirst, 1);
-    html += line('Not reachable yet', notReachable, 1);
-    html += line('Needs', needs, 1);
+    let html = `<div class="h">解锁路线 · ${numbers.size} 步</div>`;
+    html += line('先解开', solveFirst, 1);
+    html += line('暂时无法到达', notReachable, 1);
+    html += line('需要', needs, 1);
     html += rows
         .slice(1)
-        .map((row, index) => line('then →', row, index + 2))
+        .map((row, index) => line('然后 →', row, index + 2))
         .join('');
     html += alternatives;
     return html;
@@ -382,11 +380,8 @@ export function layerNote(context: PanelContext, chain: Chain, z: number): strin
     return [...chain.layers]
         .filter(([key]) => key !== mapLayerOf(z) && map.layers.includes(key))
         .map(([key, count]) => {
-            let plural = '';
-            if (count > 1) plural = 's';
-
             const name = escapeHtml(layerName(key));
-            const label = `${count} step${plural} on ${name}`;
+            const label = `${name}：${count} 步`;
             return `<div class="muted"><button class="plain lnk" data-clayer="${key}">${label}</button></div>`;
         })
         .join('');

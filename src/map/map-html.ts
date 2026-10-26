@@ -26,7 +26,7 @@ export interface MapKeep extends PanZoomKeep {
 
 const WATER_RGB = [51, 104, 139];
 
-const REACH_TITLE = 'Where the walk model says you can go from where you have been (approximate)';
+const REACH_TITLE = '根据已到访位置推算的可达范围（近似结果）';
 
 // whether each kind of mark the viewer can switch off is shown, remembered per browser
 export const overlayOn: Record<OverlayKind, boolean> = {
@@ -99,9 +99,9 @@ function controlsHtml(layers: MapLayer[]): string {
         .map((layer) => `<button data-layer="${layer.key}">${escapeHtml(layerName(layer.key))}</button>`)
         .join('');
     const reachAttributes = `data-ov="reach" title="${REACH_TITLE}"`;
-    const reachButton = `<button ${reachAttributes}>${OVERLAY_ICONS.reach}Reachable</button>`;
-    const zoomIn = `<button data-z="${1 / ZOOM_STEP}" title="Zoom in">+</button>`;
-    const zoomOut = `<button data-z="${ZOOM_STEP}" title="Zoom out">−</button>`;
+    const reachButton = `<button ${reachAttributes}>${OVERLAY_ICONS.reach}可到达</button>`;
+    const zoomIn = `<button data-z="${1 / ZOOM_STEP}" title="放大">+</button>`;
+    const zoomOut = `<button data-z="${ZOOM_STEP}" title="缩小">−</button>`;
     const layersHidden = layers.length < 2 ? ' hidden' : '';
 
     const layerGroup = `<span class="keys" data-role="layers"${layersHidden}>${layerButtons}</span>`;

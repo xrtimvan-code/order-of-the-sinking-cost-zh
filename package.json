@@ -1,13 +1,14 @@
 {
   "name": "order-of-the-sinking-cost",
   "private": true,
-  "description": "Spoiler-free progress viewer for Order of the Sinking Star (unofficial, 100% AI-made)",
+  "description": "Order of the Sinking Star 非官方简体中文无剧透进度查看器",
   "repository": "github:xPaw/order-of-the-sinking-cost",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
     "build": "vp build",
+    "build:standalone": "vp build && node scripts/build-standalone.mjs",
     "deploy": "vp build && wrangler deploy",
     "test": "vp test",
     "lint": "vp lint",

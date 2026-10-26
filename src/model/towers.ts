@@ -23,10 +23,10 @@ export function towerLevelCount(tower: TowerProgress, shownLevels: number): stri
 
 /** Bit, save enum letter, name, letter in tower pair names, name in the sky tower names (as Steam's "High Mirrors"). */
 export const WORLDS: Array<[bit: number, saveLetter: string, name: string, pairLetter: string, skyName: string]> = [
-    [1, 'H', 'Heroes', 'H', 'Heroes'],
-    [2, 'M', 'Mirror Isles', 'M', 'Mirrors'],
-    [4, 'S', 'Skipping Stones', 'S', 'Skipping Stones'],
-    [8, 'P', 'Beamcasters', 'B', 'Beamcasters'],
+    [1, 'H', '英雄', 'H', '英雄'],
+    [2, 'M', '镜之群岛', 'M', '魔镜'],
+    [4, 'S', '飞石成径', 'S', '飞石'],
+    [8, 'P', '光束发射器', 'B', '光束发射器'],
 ];
 
 /** A pair reads "HxM" and a single world (the sky towers) by its name. */
@@ -42,14 +42,14 @@ export const towerWorlds = (towerBits: number): string => {
  */
 export function towerName(towerBits: number): string {
     const worlds = towerWorlds(towerBits);
-    if (towerBits & 16) return `High ${worlds}`;
-    if (towerBits & 32) return `Low ${worlds}`;
-    return `Antipode ${worlds}`;
+    if (towerBits & 16) return `高空 ${worlds}`;
+    if (towerBits & 32) return `地下 ${worlds}`;
+    return `对映 ${worlds}`;
 }
 
 /** How the page names a sky Way while the game has not named its area: by the tower Sign it leads to. */
 export function unnamedWayName(towerBits: number): string {
-    return `Way to the ${towerName(towerBits)} sign`;
+    return `通往${towerName(towerBits)}告示牌的路线`;
 }
 
 function towerAchievementSuffix(towerBits: number): string {

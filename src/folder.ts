@@ -14,7 +14,7 @@ function loadFailed(error: unknown): void {
 
     let reason = error;
     if (error instanceof Error && error.message) reason = error.message;
-    state.loadError = `Could not read the files: ${String(reason)}`;
+    state.loadError = `无法读取文件：${String(reason)}`;
     show();
 }
 
@@ -153,7 +153,7 @@ export function refresh(now?: boolean): Promise<void> {
     return refreshing;
 }
 
-const relativeTime = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto', style: 'short' });
+const relativeTime = new Intl.RelativeTimeFormat('zh-CN', { numeric: 'auto', style: 'short' });
 
 const TIME_UNITS: Array<[limit: number, unit: Intl.RelativeTimeFormatUnit]> = [
     [60, 'second'],
@@ -178,7 +178,8 @@ function timeAgo(time: number): string {
 }
 
 /** When the save was written, as the save line's tooltip tells it. */
-export const savedTitle = (time: number): string => `Saved ${timeAgo(time)} · ${new Date(time).toLocaleString()}`;
+export const savedTitle = (time: number): string =>
+    `保存于${timeAgo(time)} · ${new Date(time).toLocaleString('zh-CN')}`;
 
 // only the tooltip changes, so the ↻ button keeps the focus
 function liveStatus(): void {
@@ -248,20 +249,16 @@ function needPicker(): void {
 // why there is no folder picker, and the other ways in
 function pickerHelpText(): string {
     if (!window.showDirectoryPicker && !dropsLive) {
-        return (
-            'This browser can’t keep a folder open. ' +
-            'Pick the save folder as a one-time snapshot, or drag it onto the page.'
-        );
+        return '此浏览器无法持续读取文件夹。请选择存档文件夹读取一次，或将其拖到页面上。';
     }
 
-    const noPicker = 'This page can’t open a folder picker here.';
+    const noPicker = '当前环境无法打开文件夹选择器。';
     if (dropsLive) {
-        const dragHint =
-            'Drag the save folder onto the page to keep it updating live, or pick it as a one-time snapshot.';
+        const dragHint = '将存档文件夹拖到页面上可持续更新，也可以选择文件夹仅读取一次。';
         return `${noPicker} ${dragHint}`;
     }
 
-    return `${noPicker} Pick the save folder as a one-time snapshot.`;
+    return `${noPicker} 请选择存档文件夹仅读取一次。`;
 }
 
 /** A button of the save folder's path as muted text followed by a copy icon; a click copies the path. */
@@ -270,12 +267,12 @@ export function savePathHtml(attributes: string): string {
         '<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.5"/>' +
         '<path d="M10.5 3.5v-.5a1.5 1.5 0 0 0-1.5-1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h.5"/></svg>';
     const text = `<span class="bptext">${escapeHtml(SAVE_PATH)}</span>`;
-    return `<button class="plain bpath" ${attributes} title="Copy the folder path">${text}<span class="copyicon">${icon}</span></button>`;
+    return `<button class="plain bpath" ${attributes} title="复制文件夹路径">${text}<span class="copyicon">${icon}</span></button>`;
 }
 
 export function pickerHelpHtml(): string {
     const message = pickerHelpText();
-    const snapshotButton = '<button class="primary" data-snapshot>Pick a snapshot…</button>';
+    const snapshotButton = '<button class="primary" data-snapshot>选择文件夹（读取一次）…</button>';
 
     // the example view's banner above already shows the path
     let path = savePathHtml('data-copy-path');
@@ -332,12 +329,12 @@ export async function pickFolder(): Promise<void> {
 let pendingHandle: FileSystemDirectoryHandle | null = null;
 
 /** The label of the buttons that open the save folder. */
-export const folderLabel = (): string => (pendingHandle ? 'Reconnect save folder' : 'Open save folder');
+export const folderLabel = (): string => (pendingHandle ? '重新连接存档文件夹' : '打开存档文件夹');
 
 /** The banner's message; its first word matches the button that opens the save folder. */
 export function bannerMessage(): string {
-    const verb = pendingHandle ? 'Reconnect' : 'Open';
-    return `${verb} your save folder to see what to play next. Your save is read here in the browser and never uploaded.`;
+    const verb = pendingHandle ? '重新连接' : '打开';
+    return `${verb}存档文件夹，查看接下来可以玩什么。存档仅在浏览器本地读取，不会上传。`;
 }
 
 function syncFolderUi(): void {
@@ -373,7 +370,7 @@ export async function folderAction(): Promise<void> {
     }
 
     // refused, or a frame that may not ask again: the folder is forgotten and the picker opens instead (a click on
-    // "Open save folder" when the browser wants a fresh one), or the page says it has none
+    // "打开存档文件夹" when the browser wants a fresh one), or the page says it has none
     await forgetFolder();
     void pickFolder();
 }
@@ -408,7 +405,7 @@ export async function copyPath(event: { currentTarget: EventTarget | null }): Pr
 
     try {
         await navigator.clipboard.writeText(SAVE_PATH);
-        showResult('Copied');
+        showResult('已复制');
     } catch {
         const range = document.createRange();
         range.selectNodeContents(pathText);
@@ -421,7 +418,7 @@ export async function copyPath(event: { currentTarget: EventTarget | null }): Pr
         try {
             copied = document.execCommand('copy');
         } catch {}
-        showResult(copied ? 'Copied' : 'Press Ctrl+C');
+        showResult(copied ? '已复制' : '请按 Ctrl+C');
     }
 }
 

@@ -1,6 +1,6 @@
 // Groups the overworld Level_Entries by local area (Area_Pin) the way the game picks the current area.
 //
-// Reads <game>/data/levels.package (overworld) and <game>/data/strings/en.localization (area names).
+// Reads <game>/data/levels.package (overworld) and <game>/data/strings/s-cn.localization (area names).
 // Writes data/level_areas.json.
 //
 // Usage: node scripts/build-areas.ts [--game DIR]
@@ -220,7 +220,7 @@ function wrapChooser(settings: Fields, fastTravel: Fields[]): { wrapOf: WrapOf; 
 
 function buildAreas() {
     const pkg = new Package();
-    const localization = loadLocalization(paths.game('data', 'strings', 'en.localization'));
+    const localization = loadLocalization(paths.game('data', 'strings', 's-cn.localization'));
     const { settings, boxes, pins, entries, markers, fastTravel } = readOverworld(pkg);
     pkg.close();
     const { wrapOf, threshold } = wrapChooser(settings, fastTravel);

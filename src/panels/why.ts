@@ -35,10 +35,10 @@ export interface WhyParts {
 
 // the world's achievement that names a mechanic, and the mechanic in the game's words (it capitalises its objects)
 const MECHANICS: Record<string, [achievement: string, text: string]> = {
-    dragon: ['HEROES', 'Dragon fire'],
-    beam: ['PROMISE', 'Beams'],
-    mirror: ['MIRRORS', 'Mirrors'],
-    stones: ['SKIPPING', 'Skipping Stones'],
+    dragon: ['HEROES', '龙焰'],
+    beam: ['PROMISE', '光束'],
+    mirror: ['MIRRORS', '魔镜'],
+    stones: ['SKIPPING', '飞石'],
 };
 
 /** A level's way-in gates that fog does not hide. */
@@ -58,15 +58,15 @@ function gateText(context: WhyContext, levelIndex: number, gates: number[]): str
     if (!gates.length) return '';
 
     const ice = context.iceOf[levelIndex];
-    if (ice !== undefined && gates.includes(ice)) return `in an ${freezerNoun(ice)}${gateAreaSuffix(context, ice)}`;
+    if (ice !== undefined && gates.includes(ice)) return `位于${freezerNoun(ice)}中${gateAreaSuffix(context, ice)}`;
     // the gates the table asks for are all needed, whether or not the walk finds a way in besides
     const needed = context.progress.wayInAll?.get(levelIndex) ?? [];
     if (gates.length > 1 && gates.every((freezerIndex) => needed.includes(freezerIndex))) {
-        return `behind all ${gates.length} ${freezersNoun(gates)}`;
+        return `需穿过全部 ${gates.length} 个${freezersNoun(gates)}`;
     }
 
-    if (gates.length > 1) return `behind one of ${gates.length} ${freezersNoun(gates)}`;
-    return `behind ${freezerNoun(gates[0])}${gateAreaSuffix(context, gates[0])}`;
+    if (gates.length > 1) return `需穿过 ${gates.length} 个${freezersNoun(gates)}之一`;
+    return `位于${freezerNoun(gates[0])}后方${gateAreaSuffix(context, gates[0])}`;
 }
 
 // the closed gates a level's pocket bumps into, when every one of them that fog shows needs the level itself
@@ -78,16 +78,16 @@ function ownGatesText(context: WhyContext, levelIndex: number): string {
     const needsLevel = (freezerIndex: number) => context.freezers[freezerIndex].req.includes(levelIndex);
     if (!shown.every(needsLevel)) return '';
 
-    if (shown.length > 1) return `only behind ${freezersNoun(shown)} it unlocks`;
-    return `only behind an ${freezerNoun(shown[0])} it unlocks${gateAreaSuffix(context, shown[0])}`;
+    if (shown.length > 1) return `已知入口仅位于该关卡自身解锁的${freezersNoun(shown)}后方`;
+    return `已知入口仅位于该关卡自身解锁的${freezerNoun(shown[0])}后方${gateAreaSuffix(context, shown[0])}`;
 }
 
 function mechanicsText(context: WhyContext, mechanics: string[]): string {
     if (!mechanics.length) return '';
 
     const known = mechanics.filter((key) => !context.hide || hasAchievement(context.status, MECHANICS[key][0]));
-    if (!known.length) return 'may need something the map does not model';
-    return `may need ${known.map((key) => MECHANICS[key][1]).join(' / ')}`;
+    if (!known.length) return '可能需要地图模型未涵盖的机制';
+    return `可能需要${known.map((key) => MECHANICS[key][1]).join(' / ')}`;
 }
 
 /** The pieces of why a level the walk cannot reach may still be reachable, as the panels word them. */
@@ -99,7 +99,7 @@ export function whyParts(context: WhyContext, levelIndex: number): WhyParts {
     // a layer the walk has not reached, named once its way onto it shows as a plan step
     let layerText = '';
     if (layer && context.model.stepShown({ t: 'a', id: layer })) {
-        layerText = `needs ${wayTo(layer)}`;
+        layerText = `需要${wayTo(layer)}`;
     }
 
     // a drop from a sky ledge leads into the level's pocket; named once the sky shows
@@ -118,9 +118,9 @@ export function whyParts(context: WhyContext, levelIndex: number): WhyParts {
 
 /** The tooltip that says the walk model is approximate, naming what it leaves out while spoilers show. */
 export function approxTip(context: WhyContext): string {
-    let leftOut = 'Mirrors, vertical Beams and Dragon fire';
-    if (context.hide) leftOut = 'some mechanics';
-    return `Approximate: the walk model leaves out ${leftOut}`;
+    let leftOut = '魔镜、竖直光束和龙焰';
+    if (context.hide) leftOut = '部分机制';
+    return `近似结果：路线模型未涵盖${leftOut}`;
 }
 
 /** Why the walk calls a level unreachable, in one line. */
@@ -128,11 +128,11 @@ export function whyText(context: WhyContext, levelIndex: number): string {
     const parts = whyParts(context, levelIndex);
     const text = [parts.gate, parts.mech, parts.layer].filter(Boolean).join(' · ');
     if (text) return text;
-    if (!parts.none) return 'not reachable from where you have been';
+    if (!parts.none) return '无法从已到访位置到达';
 
     // a sky under fog is not named; while a drop from it leads in, the gates the level unlocks are not its only way
-    if (parts.fromSky) return `from ${layerName('sky')}`;
-    if (parts.skyEntry) return 'not reachable from where you have been';
+    if (parts.fromSky) return `从${layerName('sky')}进入`;
+    if (parts.skyEntry) return '无法从已到访位置到达';
     if (parts.ownGates) return parts.ownGates;
-    return 'no known route';
+    return '暂无已知路线';
 }

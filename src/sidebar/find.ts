@@ -1,4 +1,4 @@
-// The sidebar's Find on the map: a row per kind of mark, its icon showing or hiding the kind on the map and its name
+// The sidebar's 在地图上寻找: a row per kind of mark, its icon showing or hiding the kind on the map and its name
 // listing the items in the results column (VIEWER.md "The page (viewer)")
 import { escapeHtml } from '../util.ts';
 import { hooks } from '../shared.ts';
@@ -21,8 +21,8 @@ export function findListShown(filters: ProgressFilters, kind: string): boolean {
 /** What a kind's icon button does: it names the kind, as "Hide signs on the map". */
 export function overlayActionText(kind: FindKind, shown: boolean): string {
     const name = findLabel(kind).toLowerCase();
-    if (shown) return `Hide ${name} on the map`;
-    return `Show ${name} on the map`;
+    if (shown) return `在地图上隐藏${name}`;
+    return `在地图上显示${name}`;
 }
 
 // a row: the icon button shows or hides the kind on the map, the name button lists its items beside found / total
@@ -51,7 +51,7 @@ function findRowHtml(
     let check = '';
     if (done) check = checkIcon;
     const count = `<span class="cnt">${check}${found} / ${total}${note}</span>`;
-    const title = escapeHtml([byLayer, 'List them'].filter(Boolean).join(' · '));
+    const title = escapeHtml([byLayer, '查看列表'].filter(Boolean).join(' · '));
     const nameAttributes = `data-find="${kind}" aria-pressed="${listed}" title="${title}"`;
     const nameButton = `<button class="plain sn" ${nameAttributes}><span class="n">${label}</span>${count}</button>`;
     return `<div class="${className}">${iconButton}${nameButton}</div>`;
@@ -65,13 +65,13 @@ export function sideFindHtml(model: ProgressModel): string {
         if (stats[kind][1] <= 0) continue;
 
         let note = '';
-        if (kind === 'signs' && stats.signsReady > 0) note = ` · ${stats.signsReady} to read`;
+        if (kind === 'signs' && stats.signsReady > 0) note = ` · ${stats.signsReady} 块可阅读`;
         rows.push(findRowHtml(kind, label, stats[kind], stats.by[kind], findListShown(model.F, kind), note));
     }
 
     if (!rows.length) return '';
 
-    const headContent = `<span class="sh">Find on the map</span>${CHEVRON}`;
+    const headContent = `<span class="sh">在地图上寻找</span>${CHEVRON}`;
     const open = findSectionOpen();
     const head = `<button class="plain fold" data-fold="find" aria-expanded="${open}">${headContent}</button>`;
     if (!open) return head;

@@ -18,5 +18,5 @@ export function progressBarHtml(done: number, total: number, partial = 0): strin
     if (partial) partialBar = `<i class="part" style="width:${widthOf(partial)}%"></i>`;
 
     const doneBar = `<i style="width:${widthOf(done)}%"></i>`;
-    return `<div class="bar${doneClass}" title="${done} of ${total}">${doneBar}${partialBar}</div>`;
+    return `<div class="bar${doneClass}" title="${done} / ${total}">${doneBar}${partialBar}</div>`;
 }

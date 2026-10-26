@@ -89,7 +89,7 @@ function layerSplit(list: Array<[layer: string | undefined, found: boolean]>, kn
         if (known && layer !== 'other' && !known.includes(layer)) continue;
 
         const found = things.filter(([, thingFound]) => thingFound).length;
-        const name = layer === 'other' ? 'Elsewhere' : layerName(layer);
+        const name = layer === 'other' ? '其他位置' : layerName(layer);
         parts.push(`${name} ${found} / ${things.length}`);
     }
 

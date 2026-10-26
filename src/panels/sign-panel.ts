@@ -15,8 +15,8 @@ function opensHtml(context: PanelContext, sign: Sign, gateIds: number[]): string
     if (!gateIds.length) return '';
 
     const chips = gateIds.map((freezerIndex) => gateChip(context, freezerIndex)).join('');
-    let html = `<div class="h">Opens</div><div>${chips}</div>`;
-    if (gateIds.length < sign.gates.length) html += '<div class="muted">and more under fog</div>';
+    let html = `<div class="h">可开启</div><div>${chips}</div>`;
+    if (gateIds.length < sign.gates.length) html += '<div class="muted">更多内容仍在迷雾中</div>';
     return html;
 }
 
@@ -34,21 +34,21 @@ export function showSignPanel(context: PanelContext, signIndex: number, how?: Se
         towerIndex = sign.tower;
     }
 
-    let html = panelHead(context, 'Sign');
-    let status = 'Not yet';
+    let html = panelHead(context, '告示牌');
+    let status = '尚未满足';
     let statusTone = '';
     if (signState === 'read') {
-        status = 'Read';
+        status = '已阅读';
         statusTone = ' good';
     }
     if (signState === 'ready') {
-        status = 'Ready to read';
+        status = '可阅读';
         statusTone = ' warn';
     }
 
     html += `<div><span class="chip${statusTone}">${status}</span></div>`;
-    if (signState === 'ready') html += '<div class="muted">Stand next to it, facing it, to read it.</div>';
-    html += `<div class="h">Needs</div><div>${signNeed(context, sign)}</div>`;
+    if (signState === 'ready') html += '<div class="muted">站在告示牌旁并面向它，即可阅读。</div>';
+    html += `<div class="h">需要</div><div>${signNeed(context, sign)}</div>`;
     if (towerIndex !== undefined) {
         const tower = progress.towers[towerIndex];
         const name = towerEmblemHtml(tower) + escapeHtml(towerName(tower.t));

@@ -97,13 +97,13 @@ function whereHtml(context: PanelContext, levelIndex: number): string {
 function freezerHtml(context: PanelContext, ice: number): string {
     const freezer = context.freezers[ice];
     const noun = freezerNoun(ice);
-    const html = `<div class="h">In an ${noun}</div><div>${gateChip(context, ice)}</div>`;
-    if (context.progress.gateOpen[ice]) return html + `<div class="muted">${capitalized(noun)} open</div>`;
+    const html = `<div class="h">位于${noun}中</div><div>${gateChip(context, ice)}</div>`;
+    if (context.progress.gateOpen[ice]) return html + `<div class="muted">${capitalized(noun)}已开启</div>`;
 
     const mode = gateMode(freezer);
     let withMode = '';
     if (mode) withMode = ' ' + mode;
-    return html + `<div class="hs">Opens with${withMode}</div><div>${opensChips(context, freezer)}</div>`;
+    return html + `<div class="hs">开启条件：${withMode}</div><div>${opensChips(context, freezer)}</div>`;
 }
 
 // the unlock path, and the layer note under it; a gate the path names needs no second mention below
@@ -135,11 +135,11 @@ function behindGatesHtml(context: PanelContext, behind: number[], gateIds: numbe
     if (!gateIds.length) return '';
 
     let noun = freezerNoun(gateIds[0]);
-    if (gateIds.length > 1) noun = `${freezersNoun(gateIds)} (any one)`;
+    if (gateIds.length > 1) noun = `${freezersNoun(gateIds)}（任意一个）`;
 
-    let lead = 'Behind';
-    if (behind.length > gateIds.length) lead = 'Or behind';
-    const heading = `<div class="h">${lead} ${noun}</div>`;
+    let lead = '位于后方：';
+    if (behind.length > gateIds.length) lead = '或位于后方：';
+    const heading = `<div class="h">${lead}${noun}</div>`;
     const gates = gateIds.map((freezerIndex) => {
         const freezer = context.freezers[freezerIndex];
         const mode = gateMode(freezer);
@@ -178,16 +178,16 @@ function towerHtml(
     const level = context.levels[levelIndex];
     const shownLevels = tower.normal.filter((towerLevel) => !context.progress.hidden[towerLevel]).length;
     let count = towerLevelCount(tower, shownLevels);
-    if (tower.active) count = 'activated';
+    if (tower.active) count = '已激活';
 
     let dropdownNote = '';
-    if (level.d) dropdownNote = ' · dropdown';
+    if (level.d) dropdownNote = ' · 下落关卡';
 
     const name = towerEmblemHtml(tower) + escapeHtml(towerName(tower.t));
     const towerButton = `<button class="plain lnk" data-ptower="${towerIndex}">${name}</button>`;
     let html = `<div class="h">${towerButton}${dropdownNote} · ${count}</div>`;
-    if (required.length) html += `<div class="hs">Required</div><div>${pick(context, required)}</div>`;
-    if (dropdowns.length) html += `<div class="hs">Dropdowns</div><div>${pick(context, dropdowns)}</div>`;
+    if (required.length) html += `<div class="hs">必需关卡</div><div>${pick(context, required)}</div>`;
+    if (dropdowns.length) html += `<div class="hs">下落关卡</div><div>${pick(context, dropdowns)}</div>`;
     return html;
 }
 
@@ -202,11 +202,11 @@ function countsTowardHtml(context: PanelContext, levelIndex: number, towerIndex:
     const chips = counts.map(([tower, left]) => {
         const countedTower = progress.towers[tower];
         const name = towerEmblemHtml(countedTower) + escapeHtml(towerName(countedTower.t));
-        const toGo = `<span class="muted"> · ${left} to go</span>`;
+        const toGo = `<span class="muted"> · 还需 ${left} 个</span>`;
         return `<span class="chip" data-ptower="${tower}" tabindex="0" role="button">${name}${toGo}</span>`;
     });
 
-    return `<div class="h">Counts toward</div><div>${chips.join('')}</div>`;
+    return `<div class="h">也计入</div><div>${chips.join('')}</div>`;
 }
 
 // the level's tower with the levels it still needs, then the other towers the level counts toward
@@ -236,8 +236,8 @@ function requiresHtml(context: PanelContext, level: ProgressLevel): string {
     if (!level.req.length) return '';
 
     let anyOf = '';
-    if (level.or && level.req.length > 1) anyOf = ' any of';
-    return `<div class="h">Requires${anyOf}</div><div>${pick(context, level.req)}</div>`;
+    if (level.or && level.req.length > 1) anyOf = '（任意一个）';
+    return `<div class="h">需要先解开${anyOf}</div><div>${pick(context, level.req)}</div>`;
 }
 
 // the shown Freezers that list the level among their requirements
@@ -253,13 +253,13 @@ function unlocksHtml(context: PanelContext, unlocks: LevelUnlocks, unlockedGates
     if (!unlocks.levels.length && !unlockedGates.length) return '';
 
     const gateChips = unlockedGates.map((freezerIndex) => gateChip(context, freezerIndex)).join('');
-    return `<div class="h">Unlocks</div><div>${pick(context, unlocks.levels)}${gateChips}</div>`;
+    return `<div class="h">可解锁</div><div>${pick(context, unlocks.levels)}${gateChips}</div>`;
 }
 
 function wikiTacticsHtml(level: ProgressLevel): string {
     const url = wikiTacticsUrl(level.n);
     if (!url) return '';
-    return `<div class="extlink"><a href="${escapeHtml(url)}" target="_blank" rel="noopener">WikiTactics</a></div>`;
+    return `<div class="extlink"><a href="${escapeHtml(url)}" target="_blank" rel="noopener">WikiTactics 攻略（英文）</a></div>`;
 }
 
 // the lines the map draws for the level: what it requires and unlocks, its tower, the gates around it and its chain

@@ -237,10 +237,10 @@ describe('what a level leads to', () => {
         const model = view(setup());
         const ending = model.goals[0];
         const leads = new Map(model.goalLevels(ending).map((entry) => [PROG.levels[entry.i].n, entry]));
-        expect(leads.get('t0a')!.leadsTo).toBe('Antipode HxM · 1 to go');
-        expect(leads.get('key')!.leadsTo).toBe('unlocks t0b');
-        expect(leads.get('left')!.leadsTo).toBe('opens ice cage Heroes and Light · one of 2 routes');
-        expect(leads.get('end1')!.leadsTo).toBe('Endgame');
+        expect(leads.get('t0a')!.leadsTo).toBe('对映 HxM · 还需 1 个');
+        expect(leads.get('key')!.leadsTo).toBe('解锁 t0b');
+        expect(leads.get('left')!.leadsTo).toBe('开启冰笼 Heroes and Light · 2 条路线之一');
+        expect(leads.get('end1')!.leadsTo).toBe('终局');
         // playable first, then not reachable, then locked
         const groups = model.goalLevels(ending).map((entry) => entry.group);
         expect(groups).toEqual(
@@ -270,24 +270,20 @@ describe('the first ending and its ground towers', () => {
         expect(childKeys(endingGoal(two.progress.goals[0]))).toEqual(['tower:0', 'tower:1']);
         expect(endingGoal(two.progress.goals[1]).children).toBeUndefined();
         const model = view(setup());
-        expect(endingOf(model).children!.map((child) => child.label)).toEqual([
-            'Antipode HxM',
-            'Antipode HxS',
-            'Antipode MxS',
-        ]);
+        expect(endingOf(model).children!.map((child) => child.label)).toEqual(['对映 HxM', '对映 HxS', '对映 MxS']);
         expect(model.goalByKey('tower:1')).toBe(endingOf(model).children![1]);
     });
     test("a tower not activated counts its levels; the child's levels are the tower's", () => {
         const model = view(setup());
         const child = model.goalByKey('tower:0')!;
         expect(child.progress).toEqual([0, 1]);
-        expect(child.unit).toBe('levels');
+        expect(child.unit).toBe('关卡');
         expect(child.next).toBe(null);
         expect(child.done).toBe(false);
         const names = model.goalLevels(child).map((entry) => PROG.levels[entry.i].n);
         expect(names.toSorted()).toEqual(['key', 't0a', 't0b']);
         expect(model.goalLevels(child).find((entry) => PROG.levels[entry.i].n === 't0a')!.leadsTo).toBe(
-            'Antipode HxM · 1 to go',
+            '对映 HxM · 还需 1 个',
         );
     });
     test('an activated tower is not done until its teleporter is visited; its next step is the pad', () => {
@@ -295,7 +291,7 @@ describe('the first ending and its ground towers', () => {
         const activated = view(activatedState);
         const child = activated.goalByKey('tower:0')!;
         expect(child.done).toBe(false);
-        expect(child.next).toBe('Antipode teleporter · Antipode HxM');
+        expect(child.next).toBe('对映传送点 · 对映 HxM');
         expect(child.progress).toEqual([1, 1]);
         // it asks for its teleporter, which only waits for the step onto the pad now
         const teleporter = activatedState.progress.plans.G.index.get('p0')!;
@@ -333,7 +329,7 @@ describe('the first ending and its ground towers', () => {
     });
     test('with spoilers hidden a tower under fog is left out, and the count needs the Sign shown', () => {
         const fogged = view(setup(), { towerHidden: [true, false, false] });
-        expect(endingOf(fogged).children!.map((child) => child.label)).toEqual(['Antipode HxS', 'Antipode MxS']);
+        expect(endingOf(fogged).children!.map((child) => child.label)).toEqual(['对映 HxS', '对映 MxS']);
         expect(endingOf(fogged).fogged).toBe(true);
         expect(endingOf(fogged).progress).toEqual([0, 2]);
         expect(fogged.goalByKey('tower:0')).toBe(null);
@@ -348,11 +344,11 @@ describe('spoiler labels', () => {
         const endingLabels = (model: GoalsView) =>
             model.goals.filter((goal) => goal.kind === 'ending').map((goal) => goal.label);
         const first = view(setup(), { endings: [{}, { shown: false }, { shown: false }] });
-        expect(endingLabels(first)).toEqual(['Endgame']);
+        expect(endingLabels(first)).toEqual(['终局']);
         expect(first.goals[1].key).toBe('achievements');
         const firstEarned = view(setup({ achievements: achievementBit('ENDGAME1') }), {
             endings: [{ earned: true }, {}, { shown: false }],
         });
-        expect(endingLabels(firstEarned)).toEqual(['Endgame', 'Endgame High']);
+        expect(endingLabels(firstEarned)).toEqual(['终局', '终局：高空']);
     });
 });

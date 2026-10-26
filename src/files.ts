@@ -80,7 +80,7 @@ function parseEntry(entry: SaveEntry): void {
         }
         entry.parsed = parsed;
         entry.warning = null;
-        if (stopped && 'records' in parsed) entry.warning = `read up to record ${parsed.records}; ${stopped}`;
+        if (stopped && 'records' in parsed) entry.warning = `已读取至第 ${parsed.records} 条记录；${stopped}`;
         entry.last = null;
     } catch (error) {
         if (entry.last) {
@@ -110,7 +110,7 @@ export async function addFiles(list: SaveFile[]): Promise<void> {
     // files without a campaign status open nothing: the page keeps what it shows
     if (list.length && !realFiles().some(isStatus)) {
         for (const path of added) state.files.delete(path);
-        state.loadError = 'No Status.sokoban_status in the dropped folder';
+        state.loadError = '拖入的文件夹中没有 Status.sokoban_status';
         if (state.camp != null) show();
         else void showDemo();
         return;
@@ -145,7 +145,7 @@ export async function addFiles(list: SaveFile[]): Promise<void> {
         return;
     }
 
-    const note = state.rendered === state.camp ? 'Updating…' : 'Working out your save…';
+    const note = state.rendered === state.camp ? '正在更新…' : '正在分析存档…';
     await showSave(note);
 }
 
@@ -229,7 +229,7 @@ function newestCampaign(camps: string[]): string | null {
 }
 
 /** The name a campaign shows under; saves in no folder read "Saves". */
-export const campaignLabel = (camp: string): string => camp || 'Saves';
+export const campaignLabel = (camp: string): string => (camp === DEMO_DIR ? '尚未载入存档' : camp || '存档');
 
 /** The overworld history of a campaign. */
 export const historyEntry = (camp: string): HistoryEntry | undefined =>

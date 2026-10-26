@@ -18,43 +18,43 @@ export const ENDINGS: Array<[rank: number, achievement: string]> = [
     [5, 'ENDGAME3'],
 ];
 
-// Steam's English achievement names, by the game's `Achievement` value name (the Steam API name)
+// Chinese viewer labels keyed by Steam API name; these are not verified Steam Chinese achievement names.
 const ACHIEVEMENT_NAMES: Record<string, string> = {
-    GOLD_HM: 'Gold HxM',
-    GOLD_HS: 'Gold HxS',
-    GOLD_HP: 'Gold HxB',
-    GOLD_MS: 'Gold MxS',
-    GOLD_MP: 'Gold MxB',
-    GOLD_SP: 'Gold SxB',
-    TOWER_HM: 'Antipode HxM',
-    TOWER_HS: 'Antipode HxS',
-    TOWER_HP: 'Antipode HxB',
-    TOWER_MS: 'Antipode MxS',
-    TOWER_MP: 'Antipode MxB',
-    TOWER_SP: 'Antipode SxB',
-    TOWER_H_SKY: 'High Heroes',
-    TOWER_M_SKY: 'High Mirrors',
-    TOWER_S_SKY: 'High Skipping Stones',
-    TOWER_P_SKY: 'High Beamcasters',
-    TOWER_HM_UNDERWORLD: 'Low HxM',
-    TOWER_HS_UNDERWORLD: 'Low HxS',
-    TOWER_HP_UNDERWORLD: 'Low HxB',
-    TOWER_MS_UNDERWORLD: 'Low MxS',
-    TOWER_MP_UNDERWORLD: 'Low MxB',
-    TOWER_SP_UNDERWORLD: 'Low SxB',
-    ASCEND: 'Ascend',
-    DESCEND: 'Descend',
-    ENDGAME1: 'Endgame',
-    ENDGAME2: 'Endgame High',
-    ENDGAME3: 'Endgame Low',
-    COMPLETIONIST: 'Completionist',
-    HEROES: 'Heroes',
-    MIRRORS: 'Mirror Isles',
-    SKIPPING: 'Skipping Stones',
-    PROMISE: 'Beamcasters',
+    GOLD_HM: '黄金 HxM',
+    GOLD_HS: '黄金 HxS',
+    GOLD_HP: '黄金 HxB',
+    GOLD_MS: '黄金 MxS',
+    GOLD_MP: '黄金 MxB',
+    GOLD_SP: '黄金 SxB',
+    TOWER_HM: '对映 HxM',
+    TOWER_HS: '对映 HxS',
+    TOWER_HP: '对映 HxB',
+    TOWER_MS: '对映 MxS',
+    TOWER_MP: '对映 MxB',
+    TOWER_SP: '对映 SxB',
+    TOWER_H_SKY: '高空 英雄',
+    TOWER_M_SKY: '高空 魔镜',
+    TOWER_S_SKY: '高空 飞石',
+    TOWER_P_SKY: '高空 光束发射器',
+    TOWER_HM_UNDERWORLD: '地下 HxM',
+    TOWER_HS_UNDERWORLD: '地下 HxS',
+    TOWER_HP_UNDERWORLD: '地下 HxB',
+    TOWER_MS_UNDERWORLD: '地下 MxS',
+    TOWER_MP_UNDERWORLD: '地下 MxB',
+    TOWER_SP_UNDERWORLD: '地下 SxB',
+    ASCEND: '上升',
+    DESCEND: '下降',
+    ENDGAME1: '终局',
+    ENDGAME2: '终局：高空',
+    ENDGAME3: '终局：地下',
+    COMPLETIONIST: '全收集',
+    HEROES: '英雄',
+    MIRRORS: '镜之群岛',
+    SKIPPING: '飞石成径',
+    PROMISE: '光束发射器',
 };
 
-/** An achievement's Steam name; a value Steam does not list reads in sentence case ("NEW_THING" -> "New thing"). */
+/** A Chinese achievement label; unknown values fall back to their English enum name in sentence case. */
 export function achievementName(name: string): string {
     if (ACHIEVEMENT_NAMES[name]) return ACHIEVEMENT_NAMES[name];
     return (name[0] + name.slice(1).toLowerCase()).replace(/_/g, ' ');
@@ -88,12 +88,12 @@ export function achievementRules(progress: { towers: TowerProgress[] }): Map<str
     });
 
     for (const tower of progress.towers) {
-        rules.set(towerAchievement(tower.t), { text: 'Required levels solved', tower });
+        rules.set(towerAchievement(tower.t), { text: '解开所需关卡', tower });
     }
 
-    rules.set('ASCEND', { text: 'Rank Pusher', layer: 'sky' });
-    rules.set('DESCEND', { text: 'Rank Intrepid', layer: 'underworld' });
-    rules.set('COMPLETIONIST', { text: 'All levels' });
+    rules.set('ASCEND', { text: '称号：推手', layer: 'sky' });
+    rules.set('DESCEND', { text: '称号：无畏者', layer: 'underworld' });
+    rules.set('COMPLETIONIST', { text: '全部关卡' });
     return rules;
 }
 

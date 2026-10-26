@@ -12,25 +12,25 @@ describe('Freezer names', () => {
     test('one Freezer by its model', () => {
         expect(isDoorway(0)).toBe(false);
         expect(isDoorway(2)).toBe(true);
-        expect(freezerNoun(0)).toBe('ice cage');
-        expect(freezerNoun(2)).toBe('ice gate');
+        expect(freezerNoun(0)).toBe('冰笼');
+        expect(freezerNoun(2)).toBe('冰门');
     });
 
     test('a set of Freezers of one model', () => {
-        expect(freezersNoun([0, 1])).toBe('ice cages');
-        expect(freezersNoun([2, 3])).toBe('ice gates');
-        expect(modelNoun(false)).toBe('ice cages');
-        expect(modelNoun(true)).toBe('ice gates');
+        expect(freezersNoun([0, 1])).toBe('冰笼');
+        expect(freezersNoun([2, 3])).toBe('冰门');
+        expect(modelNoun(false)).toBe('冰笼');
+        expect(modelNoun(true)).toBe('冰门');
     });
 
     test('a set of Freezers of both models', () => {
-        expect(freezersNoun([0, 2])).toBe('ice cages and gates');
-        expect(freezersNoun([3, 1, 0])).toBe('ice cages and gates');
+        expect(freezersNoun([0, 2])).toBe('冰笼与冰门');
+        expect(freezersNoun([3, 1, 0])).toBe('冰笼与冰门');
     });
 
     test('labels', () => {
-        expect(capitalized(freezerNoun(0))).toBe('Ice cage');
-        expect(capitalized(freezerNoun(3))).toBe('Ice gate');
-        expect(capitalized(freezersNoun([1, 2]))).toBe('Ice cages and gates');
+        expect(capitalized(freezerNoun(0))).toBe('冰笼');
+        expect(capitalized(freezerNoun(3))).toBe('冰门');
+        expect(capitalized(freezersNoun([1, 2]))).toBe('冰笼与冰门');
     });
 });

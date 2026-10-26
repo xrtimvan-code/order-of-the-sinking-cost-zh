@@ -1329,7 +1329,7 @@ export class MapView {
             .slice(0, 8)
             .map((marker) => this.options.markers[marker.levelIndex].tip)
             .join('<hr>');
-        if (near.length > 8) tips += `<hr><span class="muted">${near.length - 8} more</span>`;
+        if (near.length > 8) tips += `<hr><span class="muted">另有 ${near.length - 8} 项</span>`;
         return tips;
     }
 

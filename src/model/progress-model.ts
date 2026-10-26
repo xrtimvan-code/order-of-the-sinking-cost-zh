@@ -245,7 +245,7 @@ export function progressModel(camp: string): ProgressModel {
         const position = PROG.freezers[freezer].p;
         const nearest = nearestShownLevel(position[0], position[1], mapLayerOf(position[2]));
         if (nearest < 0) return '';
-        return `near ${levels[nearest].n}`;
+        return `${levels[nearest].n} 附近`;
     };
 
     const goalView = goalsView({

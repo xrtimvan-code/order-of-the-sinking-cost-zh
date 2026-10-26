@@ -113,7 +113,7 @@ describe('goals with spoilers hidden', () => {
         const model = progressModel(DEMO);
         expect(model.progress.hidden.filter(Boolean).length).toBeGreaterThan(0);
         // only the next ending, by its public name
-        expect(endingLabels(model)).toEqual(['Endgame']);
+        expect(endingLabels(model)).toEqual(['终局']);
         expect(model.achievementHidden('ENDGAME2')).toBe(true);
         // a new game has the ground towers and the Antipode teleporters' Sign under fog
         expect(model.goals[0].children).toEqual([]);
@@ -178,10 +178,10 @@ describe('goals with spoilers hidden', () => {
     test('with spoilers shown every ending is listed, and its achievement goes by its Steam name', () => {
         setSpoilersHidden(false);
         const model = progressModel(DEMO);
-        expect(endingLabels(model)).toEqual(['Endgame', 'Endgame High', 'Endgame Low']);
+        expect(endingLabels(model)).toEqual(['终局', '终局：高空', '终局：地下']);
         const achievementLabels = goalOfKind(model, 'achievements')!.children!.map((child) => child.label);
-        expect(achievementLabels).toContain('Endgame High');
-        expect(achievementLabels).toContain('Endgame Low');
+        expect(achievementLabels).toContain('终局：高空');
+        expect(achievementLabels).toContain('终局：地下');
         expect(PROG.levels.length).toBe(goalOfKind(model, 'completionist')!.progress![1]);
         // every ground tower under the first ending, its Antipode teleporters counted against the Sign
         const firstEnding = model.goals[0];
@@ -193,16 +193,16 @@ describe('goals with spoilers hidden', () => {
         const stageTowers = secondEnding.children!.filter((child) => child.kind === 'tower');
         expect(stageTowers.map((child) => child.tower).toSorted()).toEqual([...freezerTowerSet()].toSorted());
         expect(secondEnding.children!.map((child) => child.label)).toEqual([
-            'Crossroads High',
-            'High Heroes',
-            'The Heroic Way',
-            'High Mirrors',
-            'The Mirror Way',
-            'High Skipping Stones',
-            'The Skipping Way',
-            'High Beamcasters',
-            'The Beam Way',
-            'Antipode High',
+            '交汇之地：高处',
+            '高空 英雄',
+            '英雄之路',
+            '高空 魔镜',
+            '镜之路',
+            '高空 飞石',
+            '飞跃之路',
+            '高空 光束发射器',
+            '光束之路',
+            '对映之地：高处',
             'laser_pointer',
             'all_together_now',
         ]);

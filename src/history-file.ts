@@ -123,7 +123,7 @@ function readUndoActions(reader: Reader, history: ParsedHistory, start: boolean,
         } else if (type === 4) {
             reader.skip(9); // scrape change: s16 x, y, z, u8 old, new, axis
         } else {
-            throw new Error(`unknown undo action type ${type} at byte ${actionStart}`);
+            throw new Error(`字节偏移 ${actionStart} 处的撤销动作类型 ${type} 未知`);
         }
     }
 
@@ -159,7 +159,7 @@ export function parseHistory(buffer: Uint8Array | ArrayBuffer): ParsedHistory {
     };
 
     let versionTag = `v${history.version}`;
-    if (!HISTORY_VERSIONS.includes(history.version)) versionTag += ', which the game does not load';
+    if (!HISTORY_VERSIONS.includes(history.version)) versionTag += '，游戏不支持载入此版本';
     reader.skip(12); // level data version, base entity version
 
     for (let remaining = reader.n64(); remaining > 0; remaining--) {
@@ -174,29 +174,29 @@ export function parseHistory(buffer: Uint8Array | ArrayBuffer): ParsedHistory {
 
     try {
         for (let mipLevel = 0; mipLevel < mipLevels; mipLevel++) {
-            where = `mip level ${mipLevel} header`;
+            where = `mip 层级 ${mipLevel} 的头部`;
             start = reader.position;
             reader.skip(14);
             const recordCount = reader.n64();
             for (let i = 0; i < recordCount; i++) {
-                where = `mip level ${mipLevel} record ${i + 1} of ${recordCount}`;
+                where = `mip 层级 ${mipLevel} 的第 ${i + 1} / ${recordCount} 条记录`;
                 start = reader.position;
                 readUndoActions(reader, history, false, mipLevel);
             }
         }
-        where = 'the level-start record';
+        where = '关卡初始记录';
         start = reader.position;
         readUndoActions(reader, history, true, 0);
-        where = 'the trailer';
+        where = '尾部数据';
         start = reader.position;
         reader.skip(16); // active hero, next pid serials
-        if (reader.left) throw new Error(`${reader.left} bytes left after the trailer`);
+        if (reader.left) throw new Error(`尾部数据之后还剩 ${reader.left} 字节`);
     } catch (caught) {
         const reason = caught instanceof Error ? caught.message : String(caught);
-        const message = `${reason} (${versionTag}, ${where} at byte ${start})`;
+        const message = `${reason} (${versionTag}，${where}，字节偏移 ${start})`;
         if (!history.records) throw new Error(message, { cause: caught });
         history.error = message;
-        if (where !== 'the trailer') history.error += '; kept the records before it';
+        if (where !== '尾部数据') history.error += '；已保留此前的记录';
     }
 
     return history;

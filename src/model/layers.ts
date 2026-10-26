@@ -13,16 +13,16 @@ export function mapLayerOf(z: number): string {
     return (layers.find((layer) => z >= layer.z[0] && z < layer.z[1]) || layers[1] || layers[0]).key;
 }
 
-const LAYER_NAMES: Record<string, string> = { ground: 'Overworld', sky: 'High', underworld: 'Low' };
+const LAYER_NAMES: Record<string, string> = { ground: '地表', sky: '高空', underworld: '地下' };
 
 /** A layer's name on the page: the overworld, and the High and Low layers above and below it. */
 export const layerName = (key: string): string => LAYER_NAMES[key] || key[0].toUpperCase() + key.slice(1);
 
 /** The way into a layer in prose: "the way up to High", "the way down to Low". */
 export function wayTo(key: string): string {
-    if (key === 'sky') return `the way up to ${layerName(key)}`;
-    if (key === 'underworld') return `the way down to ${layerName(key)}`;
-    return `the way to ${layerName(key)}`;
+    if (key === 'sky') return `通往${layerName(key)}的上行路线`;
+    if (key === 'underworld') return `通往${layerName(key)}的下行路线`;
+    return `通往${layerName(key)}的路线`;
 }
 
 /** The offset `delta` on a circle of length `size`, taken the short way round: in (-size/2, size/2]. */

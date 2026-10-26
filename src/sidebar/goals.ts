@@ -21,11 +21,11 @@ function goalCountText(goal: GoalView): string {
         if (goal.done) return '';
         if (goal.progress) return `${goal.progress[0]} / ${goal.progress[1]}`;
         if (goal.left == null) return '—';
-        if (goal.left === 0 && goal.fogged) return 'under fog';
-        return `${goal.left}${more} left`;
+        if (goal.left === 0 && goal.fogged) return '迷雾中';
+        return `剩余 ${goal.left}${more} 步`;
     }
 
-    if (goal.next) return 'teleporter';
+    if (goal.next) return '传送点';
     if (!goal.progress) return '';
 
     const [got, total] = goal.progress;
@@ -37,30 +37,30 @@ function goalTip(goal: GoalView): string {
     if (goal.fogged) more = '+';
     const parts = [goal.label];
     if (goal.kind === 'ending') {
-        if (goal.done) parts.push('Earned');
-        else if (goal.progress) parts.push(`${goal.progress[0]} of ${goal.progress[1]} Antipode teleporters visited`);
-        else if (goal.left != null) parts.push(`${goal.left}${more} plan steps left`);
+        if (goal.done) parts.push('已获得');
+        else if (goal.progress) parts.push(`已到访 ${goal.progress[0]} / ${goal.progress[1]} 个对映传送点`);
+        else if (goal.left != null) parts.push(`计划还剩 ${goal.left}${more} 步`);
     } else if (goal.next) {
-        parts.push('Activated', `Next: ${goal.next}`);
+        parts.push('已激活', `下一步：${goal.next}`);
     } else if (goal.progress) {
         const [got, total] = goal.progress;
-        parts.push(`${got} of ${total}${more} ${goal.unit}`);
+        parts.push(`${goal.unit}：${got} / ${total}${more}`);
     }
 
-    if (goal.onPlan === false) parts.push('Not on the cheapest plan');
-    if (goal.fogged) parts.push('more is under fog');
+    if (goal.onPlan === false) parts.push('不在所需步骤最少的方案中');
+    if (goal.fogged) parts.push('更多内容仍在迷雾中');
     return parts.join(' · ');
 }
 
-const TODO_MARK = '<span class="mk todo" title="To do">○</span>';
+const TODO_MARK = '<span class="mk todo" title="待完成">○</span>';
 const NO_MARK = '<span class="mk"></span>';
 
 // a goal's mark, in a column of its own: a check when done, a filled diamond for the current one, else the given one: a
 // top-level goal gets a circle to do; a child goal has a mark only when it is done or current, its name standing under
 // its parent's, after the mark column
 function goalMark(goal: GoalView, otherwise: string): string {
-    if (goal.done) return `<span class="mk" title="Done">${checkIcon}</span>`;
-    if (goal.active) return '<span class="mk now" title="Your current goal">◆</span>';
+    if (goal.done) return `<span class="mk" title="已完成">${checkIcon}</span>`;
+    if (goal.active) return '<span class="mk now" title="当前目标">◆</span>';
     return otherwise;
 }
 
@@ -159,8 +159,8 @@ function goalKidsHtml(model: ProgressModel, goal: GoalView, selectedKey: string)
 }
 
 export function sideGoalsHtml(model: ProgressModel): string {
-    const head = '<div class="sh">Goals</div>';
-    if (!model.goals.length) return `${head}<div class="muted">Working out the goals…</div>`;
+    const head = '<div class="sh">目标</div>';
+    if (!model.goals.length) return `${head}<div class="muted">正在分析目标…</div>`;
 
     const selected = model.goalFor(model.F.goal);
     if (!selected) return head;

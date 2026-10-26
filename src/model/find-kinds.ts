@@ -9,12 +9,12 @@ export type FindKind = Exclude<OverlayKind, 'reach'>;
 export const FIND_KINDS: Array<[kind: FindKind, label: string]> = [
     ['pods', capitalized(modelNoun(false))],
     ['doorways', capitalized(modelNoun(true))],
-    ['signs', 'Signs'],
-    ['tps', 'Teleporters'],
-    ['towerPads', 'Tower pads'],
-    ['logs', 'Voice logs'],
-    ['maps', 'Map scrolls'],
-    ['treasures', 'Treasure plinths'],
+    ['signs', '告示牌'],
+    ['tps', '传送点'],
+    ['towerPads', '高塔传送点'],
+    ['logs', '语音记录'],
+    ['maps', '地图卷轴'],
+    ['treasures', '宝藏基座'],
 ];
 
 export function findLabel(kind: FindKind): string {

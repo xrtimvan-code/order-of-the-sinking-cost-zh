@@ -120,9 +120,9 @@ test('a cut file keeps the records read whole', () => {
     expect(history.actions.length).toBe(3);
     expect(oceanChanges(history).length).toBe(2);
     expect(history.hero).toEqual([5, 6, 0]);
-    expect(history.error).toMatch(/v73, mip level 0 record 2 of 2 at byte \d+\); kept the records before it$/);
+    expect(history.error).toMatch(/v73，mip 层级 0 的第 2 \/ 2 条记录，字节偏移 \d+\)；已保留此前的记录$/);
     // nothing read whole: the reader throws
-    expect(() => parseHistory(buf.subarray(0, ends[0] - 3))).toThrow(/mip level 0 record 1 of 2/);
+    expect(() => parseHistory(buf.subarray(0, ends[0] - 3))).toThrow(/mip 层级 0 的第 1 \/ 2 条记录/);
 });
 
 test('an unknown action type names its own byte, and bytes after the trailer are reported', () => {
@@ -133,12 +133,12 @@ test('an unknown action type names its own byte, and bytes after the trailer are
     bad[at] = 54;
     const history = parseHistory(bad);
     expect(history.records).toBe(1);
-    expect(history.error).toContain(`unknown undo action type 54 at byte ${at}`);
+    expect(history.error).toContain(`字节偏移 ${at} 处的撤销动作类型 54 未知`);
     const long = new Uint8Array(buf.length + 2);
     long.set(buf);
     const longHistory = parseHistory(long);
     expect(longHistory.records).toBe(3);
-    expect(longHistory.error).toMatch(/^2 bytes left after the trailer \(v73, the trailer at byte \d+\)$/);
+    expect(longHistory.error).toMatch(/^尾部数据之后还剩 2 字节 \(v73，尾部数据，字节偏移 \d+\)$/);
 });
 
 // the records after the one under test must still line up: SECOND's CHANGE and hero are read from the right bytes

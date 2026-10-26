@@ -23,7 +23,7 @@ import { openKeptPanel, wireMapPanels, wirePage } from './panels/wiring.ts';
 // the list and the details panel share one cell of the column: a panel covers the list, which keeps its scroll position
 const RESULTS_HTML =
     '<div class="rlist" id="pgList">' +
-    '<div class="rs"><input type="search" id="fQ" placeholder="Search levels…" aria-label="Search levels"></div>' +
+    '<div class="rs"><input type="search" id="fQ" placeholder="搜索关卡…" aria-label="搜索关卡"></div>' +
     '<div class="rh" id="pgCount"></div>' +
     '<div class="fc" id="pgChips"></div>' +
     '<div class="rows" id="pgRows"></div>' +

@@ -80,7 +80,7 @@ test.each(VERSIONS)('version %i', (version) => {
     const bytes = statusFile(version);
     expect(parseStatus(bytes)).toEqual(expected(version));
     // every byte is needed: a reader that skips too much runs out
-    expect(() => parseStatus(bytes.subarray(0, bytes.length - 1))).toThrow(/past end/);
+    expect(() => parseStatus(bytes.subarray(0, bytes.length - 1))).toThrow(/超出文件末尾/);
 });
 
 test('the v33 current level string starts at byte 119, and v31 has the 33-byte legacy block before one string', () => {
@@ -93,6 +93,6 @@ test('the v33 current level string starts at byte 119, and v31 has the 33-byte l
 });
 
 test('versions the game does not load are rejected', () => {
-    expect(() => parseStatus(statusFile(4))).toThrow(/version 4 is not supported \(expected 5\.\.33\)/);
-    expect(() => parseStatus(new Writer().u32(34).zeros(200).done())).toThrow(/version 34 is not supported/);
+    expect(() => parseStatus(statusFile(4))).toThrow(/不支持存档状态版本 4（支持 5\.\.33）/);
+    expect(() => parseStatus(new Writer().u32(34).zeros(200).done())).toThrow(/不支持存档状态版本 34/);
 });

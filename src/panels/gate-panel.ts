@@ -26,9 +26,9 @@ import {
 function leadsToHtml(context: PanelContext, leadsAll: number[], leads: number[]): string {
     if (!leadsAll.length) return '';
 
-    let html = '<div class="h">Leads to</div>';
+    let html = '<div class="h">通往</div>';
     if (leads.length) html += `<div>${pick(context, leads)}</div>`;
-    if (leads.length < leadsAll.length) html += '<div class="muted">and more under fog</div>';
+    if (leads.length < leadsAll.length) html += '<div class="muted">更多内容仍在迷雾中</div>';
     return html;
 }
 
@@ -44,10 +44,10 @@ export function showGatePanel(context: PanelContext, freezerIndex: number, how?:
     const label = capitalized(freezerNoun(freezerIndex));
     let html = panelHead(context, label);
 
-    let status = 'Closed';
+    let status = '已关闭';
     let statusTone = '';
     if (isOpen) {
-        status = 'Open';
+        status = '已开启';
         statusTone = ' good';
     }
 
@@ -59,7 +59,7 @@ export function showGatePanel(context: PanelContext, freezerIndex: number, how?:
 
     let withMode = '';
     if (mode) withMode = ' ' + mode;
-    html += `<div class="h">Opens with${withMode}</div><div>${opensChips(context, freezer)}</div>`;
+    html += `<div class="h">开启条件：${withMode}</div><div>${opensChips(context, freezer)}</div>`;
 
     let leadsAll: number[] = [];
     if (!isOpen) leadsAll = progress.reach?.leads.get(freezerIndex) || [];

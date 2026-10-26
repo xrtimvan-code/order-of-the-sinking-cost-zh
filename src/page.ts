@@ -91,12 +91,12 @@ function drawPage(): void {
         main.innerHTML = '';
     } else if (entry.error) {
         const name = escapeHtml(baseName(entry.path));
-        const failure = `<div class="err">Failed to parse: ${escapeHtml(entry.error)}</div>`;
+        const failure = `<div class="err">解析失败：${escapeHtml(entry.error)}</div>`;
         const firstBytes = hexDump(entry.buf ?? new Uint8Array(), 256);
-        const details = `<details><summary>First bytes</summary><pre class="mono">${firstBytes}</pre></details>`;
+        const details = `<details><summary>文件起始字节</summary><pre class="mono">${firstBytes}</pre></details>`;
         main.innerHTML = `<h2>${name}</h2>${failure}${details}`;
     } else if (!model) {
-        main.innerHTML = '<div class="err">This build has no level data.</div>';
+        main.innerHTML = '<div class="err">此版本缺少关卡数据。</div>';
     } else {
         renderProgress(model);
     }

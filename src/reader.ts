@@ -18,7 +18,7 @@ export class Reader {
     /** Throws unless `count` more bytes can be read. */
     need(count: number): void {
         if (count < 0 || this.position + count > this.end) {
-            throw new Error(`read of ${count} bytes at ${this.position} past end ${this.end}`);
+            throw new Error(`从偏移 ${this.position} 读取 ${count} 字节时超出文件末尾 ${this.end}`);
         }
     }
 
@@ -75,7 +75,7 @@ export class Reader {
     n64(): number {
         const value = this.s64();
         if (value > BigInt(Number.MAX_SAFE_INTEGER) || value < -BigInt(Number.MAX_SAFE_INTEGER)) {
-            throw new Error(`count ${value} too large at ${this.position - 8}`);
+            throw new Error(`偏移 ${this.position - 8} 处的数量 ${value} 过大`);
         }
 
         return Number(value);

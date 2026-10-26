@@ -19,7 +19,7 @@ Game folder: `--game DIR`, else `$SOKO_GAME`, else the Steam install. Saves: `$S
 |---|---|---|---|---|
 | 1 | the schema exporter (not in this repository) | `sinking_star.exe` in IDA, entity type list | `data/schema.json` | see below |
 | 2 | `build-levels.ts` | `data/levels.package` (game), `data/schema.json` | `data/levels.json`, `data/level_entities/` | `npm run data:levels` |
-| 3 | `build-areas.ts` | `data/levels.package` (game), `data/strings/en.localization` (game) | `data/level_areas.json` | `npm run data:areas` |
+| 3 | `build-areas.ts` | `data/levels.package` (game), `data/strings/s-cn.localization` (game) | `data/level_areas.json` | `npm run data:areas` |
 | 4 | `build-fog.ts` | `data/levels.package` (game), `data/schema.json` | `data/fog.json` | `npm run data:fog` |
 | 5 | `build-world.ts` | `data/levels.package` (game), `data/schema.json` | `data/world.json` | `npm run data:world` |
 | 6 | `build-map.ts` | `data/levels.json`, game `data/levels.package` | `data/map.json` | `npm run data:map` |

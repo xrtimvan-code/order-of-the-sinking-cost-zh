@@ -17,11 +17,11 @@ function towerStateHtml(tower: TowerProgress, shownLevels: number, unsolvedShown
     let toGo = String(Math.max(0, tower.req - tower.solvedNormal));
     if (fogged) toGo = `${unsolvedShown}+`;
 
-    let state = `<span class="chip">${towerLevelCount(tower, shownLevels)} · ${toGo} to go</span>`;
-    if (tower.active) state = '<span class="chip good">Activated</span>';
+    let state = `<span class="chip">${towerLevelCount(tower, shownLevels)} · 还需 ${toGo} 个</span>`;
+    if (tower.active) state = '<span class="chip good">已激活</span>';
 
     let gold = '';
-    if (tower.gold) gold = '<span class="chip warn">Gold</span>';
+    if (tower.gold) gold = '<span class="chip warn">黄金</span>';
     return `<div>${state}${gold}</div>`;
 }
 
@@ -57,13 +57,13 @@ export function showTowerPanel(context: PanelContext, towerIndex: number, how?: 
     }
 
     const offPath = todo.filter((level) => !onPath.has(level));
-    let unsolvedTitle = 'Unsolved';
-    if (offPath.length < todo.length) unsolvedTitle = 'Also unsolved';
+    let unsolvedTitle = '未解开';
+    if (offPath.length < todo.length) unsolvedTitle = '其他未解开的关卡';
     if (offPath.length) html += `<div class="h">${unsolvedTitle}</div><div>${pick(context, offPath)}</div>`;
-    if (done.length) html += `<div class="h">Solved</div><div>${pick(context, done)}</div>`;
+    if (done.length) html += `<div class="h">已解开</div><div>${pick(context, done)}</div>`;
     if (dropdowns.length) {
         const solvedDropdowns = dropdowns.length - unsolvedDropdowns.length;
-        html += `<div class="h">Dropdowns (optional) ${solvedDropdowns} / ${dropdowns.length}</div>`;
+        html += `<div class="h">下落关卡（可选） ${solvedDropdowns} / ${dropdowns.length}</div>`;
         html += `<div>${pick(context, dropdowns)}</div>`;
     }
 

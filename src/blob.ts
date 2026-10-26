@@ -47,7 +47,7 @@ function readValue(reader: Reader, descriptor: SchemaField): FieldValue {
         return { arr: count, items };
     }
 
-    throw new Error(`cannot decode field type ${descriptor.t}`);
+    throw new Error(`无法解码字段类型 ${descriptor.t}`);
 }
 
 /** A decoder for the blobs of the entity types in `schema` (data/schema.json). */
@@ -70,7 +70,7 @@ export function createBlobDecoder(
         const reader = new Reader(blob);
         const decoded: DecodedBlob = { baseVersion: reader.u16(), typeVersion: reader.u16(), fields: [] };
         if (!schema.types[typeName] || schema.types[typeName].missing) {
-            throw new Error(`no schema for entity type ${typeName}`);
+            throw new Error(`缺少实体类型 ${typeName} 的结构定义`);
         }
 
         let baseFields: SchemaField[] | null = null;
@@ -89,13 +89,13 @@ export function createBlobDecoder(
                 list = baseFields;
             }
             const field = list[index];
-            if (!field) throw new Error(`field index ${index} out of range for ${derived ? typeName : 'base'}`);
+            if (!field) throw new Error(`字段索引 ${index} 超出 ${derived ? typeName : 'base'} 的范围`);
 
             const old = hasOld ? readValue(reader, field) : null;
             const value = readValue(reader, field);
             const terminator = reader.u8();
             if (terminator !== 0xfd) {
-                throw new Error(`bad terminator 0x${terminator.toString(16)} after ${field.n}`);
+                throw new Error(`字段 ${field.n} 后的结束标记 0x${terminator.toString(16)} 无效`);
             }
             decoded.fields.push({ f: field, derived, old, new: value });
         }

@@ -83,7 +83,7 @@ describe('the Signs row', () => {
         const totals = totalsAtRank(0, everywhere, null);
         expect(openingSigns().length).toBeLessThan(PROG.signs.length);
         expect(totals.stats.signs).toEqual([0, 17]);
-        expect(totals.stats.by.signs).toBe('Overworld 0 / 8 · High 0 / 8 · Low 0 / 1');
+        expect(totals.stats.by.signs).toBe('地表 0 / 8 · 高空 0 / 8 · 地下 0 / 1');
     });
 
     test('at rank 1 the rank 1 Signs are ready to read, not found', () => {
@@ -92,7 +92,7 @@ describe('the Signs row', () => {
         expect(rankOneSigns.length).toBe(5);
         expect(totals.stats.signs).toEqual([0, 17]);
         expect(totals.stats.signsReady).toBe(5);
-        expect(totals.stats.by.signs).toBe('Overworld 0 / 8 · High 0 / 8 · Low 0 / 1');
+        expect(totals.stats.by.signs).toBe('地表 0 / 8 · 高空 0 / 8 · 地下 0 / 1');
     });
 
     test('a read Sign is found whatever its rule says', () => {
@@ -115,7 +115,7 @@ describe('the Signs row', () => {
         const totals = totalsAtRank(1, notSky, ['ground', 'underworld']);
         expect(totals.stats.signs).toEqual([0, 9]);
         expect(totals.stats.signsReady).toBe(5);
-        expect(totals.stats.by.signs).toBe('Overworld 0 / 8 · Low 0 / 1');
+        expect(totals.stats.by.signs).toBe('地表 0 / 8 · 地下 0 / 1');
     });
 
     test('nothing is listed while every Sign is under fog', () => {

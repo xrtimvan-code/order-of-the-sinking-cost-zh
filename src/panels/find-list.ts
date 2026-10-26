@@ -36,7 +36,7 @@ function placeOf(context: PanelContext, overlay: MapOverlay): string {
 
     const area = context.model.areaAt(overlay.position);
     if (area !== null) return area;
-    if (overlay.layer === undefined) return 'Fast-travel screen';
+    if (overlay.layer === undefined) return '快速旅行界面';
     return layerName(overlay.layer);
 }
 
@@ -55,8 +55,8 @@ function overlayItem(context: PanelContext, overlay: MapOverlay): FindItem {
 }
 
 function towerPadItem(context: PanelContext, tower: MapTower): FindItem {
-    let state = 'Not discovered';
-    if (tower.padFound) state = 'Discovered';
+    let state = '尚未发现';
+    if (tower.padFound) state = '已发现';
 
     return {
         id: 'w' + tower.towerIndex,
@@ -134,7 +134,7 @@ function rowHtml(context: PanelContext, item: FindItem, tab: boolean, note = '')
     let near = '';
     if (item.panel?.[0] !== 'tower') {
         const level = context.model.nearestShownLevel(item.x, item.y, item.layer);
-        if (level >= 0) near = ` <span class="muted">· near ${escapeHtml(context.levels[level].n)}</span>`;
+        if (level >= 0) near = ` <span class="muted">· ${escapeHtml(context.levels[level].n)} 附近</span>`;
     }
 
     let iconClass = '';
@@ -164,7 +164,7 @@ function signPlace(context: PanelContext, signIndex: number): string {
 
     const nearest = context.model.nearestShownLevel(position[0], position[1], mapLayerOf(position[2]));
     if (nearest < 0) return '';
-    return `near ${context.levels[nearest].n}`;
+    return `${context.levels[nearest].n} 附近`;
 }
 
 // the kind of mark a cage is listed under
@@ -203,7 +203,7 @@ export function rankCageGroupHtml(context: PanelContext, first: boolean): string
 
         if (!context.progress.signRead(context.signs[cage.sign].pid)) {
             const place = signPlace(context, cage.sign);
-            let note = 'read its Sign';
+            let note = '阅读对应告示牌';
             if (place && place !== item.place) note += ` · ${place}`;
             notes.set(item.id, note);
         }
@@ -218,7 +218,7 @@ export function rankCageGroupHtml(context: PanelContext, first: boolean): string
     const items = [...sortItems(context, liftPieces), ...sortItems(context, others)];
     if (!items.length) return '';
 
-    const head = `<div class="rg">Ice cages your rank opens <span class="c muted">· ${items.length}</span></div>`;
+    const head = `<div class="rg">当前称号可开启的冰笼 <span class="c muted">· ${items.length}</span></div>`;
     const rows = items.map((item, index) => rowHtml(context, item, first && index === 0, notes.get(item.id)));
     return head + rows.join('');
 }
@@ -230,8 +230,8 @@ export function drawFindList(context: PanelContext, kind: FindKind): void {
     const todo = items.filter((item) => !item.done);
     const done = items.filter((item) => item.done);
 
-    const back = '<button class="plain lnk" data-find-back title="Back to the goal\'s levels">‹ Back</button>';
-    const left = `<b>${escapeHtml(findLabel(kind))}</b> · ${todo.length} left`;
+    const back = '<button class="plain lnk" data-find-back title="返回目标关卡列表">‹ 返回</button>';
+    const left = `<b>${escapeHtml(findLabel(kind))}</b> · 剩余 ${todo.length} 项`;
     $('#pgCount').innerHTML = `<span class="fh">${back}<span>${left}</span></span>`;
 
     let pressedClass = '';
@@ -242,11 +242,11 @@ export function drawFindList(context: PanelContext, kind: FindKind): void {
 
     const chipAttributes = `data-find-done aria-pressed="${filters.findDone}"${disabled}`;
     const count = `<span class="n">${done.length}</span>`;
-    $('#pgChips').innerHTML = `<button class="plain chip st${pressedClass}" ${chipAttributes}>Solved ${count}</button>`;
+    $('#pgChips').innerHTML = `<button class="plain chip st${pressedClass}" ${chipAttributes}>已完成 ${count}</button>`;
 
     let html = '';
-    if (todo.length) html += groupHtml(context, 'Still to do', todo, true);
-    if (filters.findDone && done.length) html += groupHtml(context, 'Done', done, !todo.length);
-    if (!html) html = `<div class="none muted">Nothing left to find here.</div>`;
+    if (todo.length) html += groupHtml(context, '尚待完成', todo, true);
+    if (filters.findDone && done.length) html += groupHtml(context, '已完成', done, !todo.length);
+    if (!html) html = `<div class="none muted">这里没有尚待寻找的内容。</div>`;
     $('#pgRows').innerHTML = html;
 }

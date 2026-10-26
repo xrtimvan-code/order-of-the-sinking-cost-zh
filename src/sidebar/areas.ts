@@ -120,7 +120,7 @@ export function areaRowsHtml(model: ProgressModel): string {
         if (picked) extraClasses += ' on';
 
         const attributes = `data-area="${areaIndex}" aria-pressed="${picked}" title="${name}"`;
-        const markHtml = `<span class="mk" title="All levels solved">${check}</span>`;
+        const markHtml = `<span class="mk" title="全部关卡已解开">${check}</span>`;
         const nameHtml = `${areaEmblemHtml(areas[areaIndex])}<span class="n">${name}</span>`;
         const countHtml = `<span class="cnt">${solved} / ${all}</span>`;
         return `<button class="plain gl${extraClasses}" ${attributes}>${markHtml}${nameHtml}${countHtml}</button>`;
@@ -129,8 +129,8 @@ export function areaRowsHtml(model: ProgressModel): string {
     // finished areas fold into one row under the open ones
     const finishedRowHtml = (layerKey: string, finishedCount: number): string => {
         const attributes = `data-fin="${layerKey}" role="button" tabindex="0" aria-expanded="${finishedOpen}"`;
-        const title = 'title="Areas with every level solved"';
-        const label = `<span>${finishedCount} finished</span>`;
+        const title = 'title="全部关卡均已解开的区域"';
+        const label = `<span>${finishedCount} 个已完成区域</span>`;
         return `<div class="fin" ${attributes} ${title}><span class="mk"></span>${label}${CHEVRON}</div>`;
     };
 

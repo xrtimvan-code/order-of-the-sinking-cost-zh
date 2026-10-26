@@ -6,7 +6,7 @@ export const $ = (selector: string, root: ParentNode = document): HTMLElement =>
     root.querySelector<HTMLElement>(selector)!;
 
 /** Orders two texts the way the user's language does; sorts use it in place of localeCompare, which builds a collator per call. */
-export const compareText = new Intl.Collator().compare;
+export const compareText = new Intl.Collator('zh-CN').compare;
 
 const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
 
@@ -34,14 +34,14 @@ export function duration(seconds: number): string {
     const hours = Math.floor(total / 3600);
     const minutes = Math.floor(total / 60) % 60;
     const rest = total % 60;
-    if (hours) return `${hours}h ${String(minutes).padStart(2, '0')}m`;
-    return `${minutes}m ${String(rest).padStart(2, '0')}s`;
+    if (hours) return `${hours} 小时 ${String(minutes).padStart(2, '0')} 分钟`;
+    return `${minutes} 分钟 ${String(rest).padStart(2, '0')} 秒`;
 }
 
 /** The first `max` bytes as hex, with the byte count when there are more. */
 export function hexDump(bytes: Uint8Array, max = 64): string {
     let text = Array.from(bytes.subarray(0, max), (byte) => byte.toString(16).padStart(2, '0')).join(' ');
-    if (bytes.length > max) text += ` … (${bytes.length} bytes)`;
+    if (bytes.length > max) text += ` … (${bytes.length} 字节)`;
     return text;
 }
 

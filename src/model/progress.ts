@@ -26,15 +26,15 @@ import type { LevelFlags, LevelState, SignRule } from './unlocking.ts';
 import { accessOf, gatesBehind, signAccessOf, signWayInOf, unlocksOf, wayInModel } from './way-in.ts';
 import type { LevelUnlocks, WhyBlocked } from './way-in.ts';
 
-export const RANKS = ['Visitor', 'Egressant', 'Pusher', 'Arranger', 'Intrepid', 'Sokoban'];
+export const RANKS = ['访客', '脱逃者', '推手', '布局师', '无畏者', '守库人'];
 
 export const STATE_LABELS: Record<LevelState, string> = {
-    solved: 'Solved',
-    partial: 'Partially solved',
-    visited: 'Entered',
-    unlocked: 'Reachable',
-    blocked: 'Blocked',
-    locked: 'Locked',
+    solved: '已解开',
+    partial: '部分解开',
+    visited: '已进入',
+    unlocked: '可到达',
+    blocked: '暂不可达',
+    locked: '未解锁',
 };
 
 /** The parts of a status the progress is worked out from. */
@@ -102,7 +102,7 @@ export type ShownProgress = CampaignProgress & { hidden: boolean[]; towerHidden:
 
 /** The label of a level state; without a reachability model an open level is only known to be not entered yet. */
 export const stateLabel = (progress: { reach: Reachability | null }, state: LevelState): string => {
-    if (state === 'unlocked' && !progress.reach) return 'Not entered';
+    if (state === 'unlocked' && !progress.reach) return '尚未进入';
     return STATE_LABELS[state];
 };
 

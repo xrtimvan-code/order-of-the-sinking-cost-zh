@@ -58,7 +58,7 @@ export function levelMarkers(context: PanelContext): MapMarker[] {
         let tower = '';
         if (context.towerShown(levelIndex)) {
             let dropdown = '';
-            if (level.d) dropdown = ' · dropdown';
+            if (level.d) dropdown = ' · 下落关卡';
             tower = `<br>${escapeHtml(towerName(level.t ?? 0))}${dropdown}`;
         }
 
@@ -80,9 +80,9 @@ export function levelMarkers(context: PanelContext): MapMarker[] {
 
                 let gate = '';
                 if (freezerIndex !== undefined) {
-                    let openness = 'Closed';
-                    if (progress.gateOpen[freezerIndex]) openness = 'Open';
-                    gate = `<br>In an ${freezerNoun(freezerIndex)} · ${openness}`;
+                    let openness = '已关闭';
+                    if (progress.gateOpen[freezerIndex]) openness = '已开启';
+                    gate = `<br>位于${freezerNoun(freezerIndex)}中 · ${openness}`;
                 }
 
                 const name = escapeHtml(level.n);
@@ -99,15 +99,15 @@ export function towerMarkers(context: PanelContext): MapTower[] {
     return progress.towers
         .map((tower, towerIndex): MapTower => {
             let activated = '';
-            if (tower.active) activated = ' · activated';
+            if (tower.active) activated = ' · 已激活';
 
             // a tower with a pad of its own is drawn on the pad
             let position = tower.p;
             let padLine = '';
             if (tower.pad !== undefined) {
                 position = context.teleporters[tower.pad].p;
-                padLine = '<br>Teleporter · not discovered';
-                if (context.model.padDisc(tower.pad)) padLine = '<br>Teleporter · discovered';
+                padLine = '<br>传送点 · 尚未发现';
+                if (context.model.padDisc(tower.pad)) padLine = '<br>传送点 · 已发现';
             }
 
             const name = towerEmblemHtml(tower) + escapeHtml(towerName(tower.t));
@@ -119,7 +119,7 @@ export function towerMarkers(context: PanelContext): MapTower[] {
                 activated: tower.active,
                 onPad: tower.pad !== undefined,
                 padFound: tower.pad !== undefined && context.model.padDisc(tower.pad),
-                tip: `<b>${name}</b><br>${tower.solvedNormal} / ${tower.req} solved${activated}${padLine}`,
+                tip: `<b>${name}</b><br>${tower.solvedNormal} / ${tower.req} 已解开${activated}${padLine}`,
             };
         })
         .filter((tower) => !progress.towerHidden[tower.towerIndex]);
@@ -198,7 +198,7 @@ function gateOverlay(context: PanelContext, freezerIndex: number): MapOverlay {
     ];
     let withMode = '';
     if (mode) withMode = ' ' + mode;
-    const needs = `Opens with${withMode}<br>${options.join('<br>')}`;
+    const needs = `开启条件：${withMode}<br>${options.join('<br>')}`;
 
     const area = context.gateArea(freezerIndex);
     let inArea = '';
@@ -206,13 +206,11 @@ function gateOverlay(context: PanelContext, freezerIndex: number): MapOverlay {
 
     let tip = `<b>${capitalized(freezerNoun(freezerIndex))}</b>${inArea}<br>`;
     if (isOpen) {
-        tip += 'Open';
+        tip += '已开启';
     } else {
-        tip += `Closed<hr>${needs}`;
+        tip += `已关闭<hr>${needs}`;
         if (leads) {
-            let plural = '';
-            if (leads > 1) plural = 's';
-            tip += `<hr><span class="muted">Leads to ${leads} level${plural} not reached (approx.)</span>`;
+            tip += `<hr><span class="muted">通往 ${leads} 个尚未到达的关卡（近似结果）</span>`;
         }
     }
 
@@ -229,7 +227,7 @@ function gateOverlay(context: PanelContext, freezerIndex: number): MapOverlay {
         merge: context.iceLevel.get(freezerIndex),
         kind,
         findKind: kind,
-        state: isOpen ? 'Open' : 'Closed',
+        state: isOpen ? '已开启' : '已关闭',
         done: isOpen,
         req: roleFor(context.goal, 'g', freezerIndex) !== 'optional',
         layer: FOG_LAYER_KEYS[freezer.l],
@@ -250,16 +248,16 @@ function signOverlay(context: PanelContext, signIndex: number): MapOverlay {
 
     let panel: PanelKey = ['sign', signIndex];
     let findKind: FindKind | null = 'signs';
-    let status = 'Not yet';
-    if (signState === 'read') status = 'Satisfied';
-    if (signState === 'ready') status = 'Ready to read';
-    let tip = `<b>Sign</b><br>${signNeed(context, sign)}<br>${status}`;
+    let status = '尚未满足';
+    if (signState === 'read') status = '已满足';
+    if (signState === 'ready') status = '可阅读';
+    let tip = `<b>告示牌</b><br>${signNeed(context, sign)}<br>${status}`;
     if (sign.status && sign.tower !== undefined) {
         const tower = context.progress.towers[sign.tower];
         let activated = '';
-        if (tower.active) activated = ' · activated';
+        if (tower.active) activated = ' · 已激活';
         const towerHtml = towerNameHtml(context, sign.tower);
-        tip = `<b>Tower sign</b><br>${towerHtml}<br>${tower.solvedNormal} / ${tower.req} solved${activated}`;
+        tip = `<b>高塔告示牌</b><br>${towerHtml}<br>${tower.solvedNormal} / ${tower.req} 已解开${activated}`;
         panel = ['tower', sign.tower];
 
         // a tower status sign is not among the signs that open Freezers, which the Signs row counts
@@ -289,10 +287,10 @@ function signOverlay(context: PanelContext, signIndex: number): MapOverlay {
 function padOverlay(context: PanelContext, teleporterIndex: number): MapOverlay {
     const pad = context.teleporters[teleporterIndex];
     const discovered = context.model.padDisc(teleporterIndex);
-    let status = 'Not discovered';
-    if (discovered) status = 'Discovered';
+    let status = '尚未发现';
+    if (discovered) status = '已发现';
 
-    let disabled = ' · disabled';
+    let disabled = ' · 未启用';
     if (context.progress.tst[teleporterIndex].en) disabled = '';
     return {
         id: 'p' + teleporterIndex,
@@ -306,18 +304,18 @@ function padOverlay(context: PanelContext, teleporterIndex: number): MapOverlay 
         done: discovered,
         icon: 'teleporter',
         dimUntilDone: true,
-        tip: `<b>Teleporter</b><br>${status}${disabled}`,
+        tip: `<b>传送点</b><br>${status}${disabled}`,
     };
 }
 
 // a gold room is visited once its endpoint is discovered, and open once its tower is activated
 function goldRoomLabel(context: PanelContext, room: GoldRoom): string {
     const states = context.progress.tst;
-    if (states[room.endpoint].disc) return 'Visited';
+    if (states[room.endpoint].disc) return '已到访';
 
     const tower = context.progress.towers[room.tower];
-    if (tower?.active || states[room.pad]?.en || states[room.endpoint].en) return 'Open, not visited';
-    return 'Locked';
+    if (tower?.active || states[room.pad]?.en || states[room.endpoint].en) return '已开启，尚未到访';
+    return '未解锁';
 }
 
 function goldRoomOverlay(context: PanelContext, room: GoldRoom): MapOverlay {
@@ -334,11 +332,11 @@ function goldRoomOverlay(context: PanelContext, room: GoldRoom): MapOverlay {
     let towerLine = '';
     if (tower) {
         let activated = '';
-        if (tower.active) activated = ' · activated';
+        if (tower.active) activated = ' · 已激活';
         towerLine = `<br>${towerNameHtml(context, room.tower)}${activated}`;
     }
 
-    let place = 'Antipode';
+    let place = '对映之地';
     if (tower) place = towerName(tower.t);
 
     return {
@@ -355,14 +353,14 @@ function goldRoomOverlay(context: PanelContext, room: GoldRoom): MapOverlay {
         icon: 'gold-room',
         accent,
         panel,
-        tip: `<b>Antipode teleporter</b><br>${label}${towerLine}`,
+        tip: `<b>对映传送点</b><br>${label}${towerLine}`,
     };
 }
 
 function voiceLogOverlay(context: PanelContext, log: VoiceLog): MapOverlay {
     const heard = context.model.heard(log);
-    let status = 'Not heard';
-    if (heard) status = 'Heard';
+    let status = '尚未收听';
+    if (heard) status = '已收听';
 
     return {
         id: 'l' + log.pid,
@@ -375,14 +373,14 @@ function voiceLogOverlay(context: PanelContext, log: VoiceLog): MapOverlay {
         position: log.p,
         done: heard,
         icon: 'voice-log',
-        tip: `<b>Voice log</b><br>${status}`,
+        tip: `<b>语音记录</b><br>${status}`,
     };
 }
 
 function mapScrollOverlay(context: PanelContext, giver: ViewGiver): MapOverlay {
     const taken = context.model.taken(giver);
-    let status = 'Not taken';
-    if (taken) status = 'Taken';
+    let status = '尚未领取';
+    if (taken) status = '已领取';
 
     return {
         id: 'm' + giver.pid,
@@ -395,16 +393,16 @@ function mapScrollOverlay(context: PanelContext, giver: ViewGiver): MapOverlay {
         position: giver.p,
         done: taken,
         icon: 'map-scroll',
-        tip: `<b>Map scroll</b><br>${escapeHtml(layerName(FOG_LAYER_KEYS[giver.l]))} · ${status}`,
+        tip: `<b>地图卷轴</b><br>${escapeHtml(layerName(FOG_LAYER_KEYS[giver.l]))} · ${status}`,
     };
 }
 
 function treasureOverlay(context: PanelContext, plinth: TreasureDisplay, acquired: number): MapOverlay {
     const got = acquired > plinth.i;
-    let status = 'Empty';
+    let status = '空';
     let icon: IconName = 'treasure';
     if (got) {
-        status = 'Acquired';
+        status = '已获得';
         icon = 'treasure-taken';
     }
 
@@ -419,7 +417,7 @@ function treasureOverlay(context: PanelContext, plinth: TreasureDisplay, acquire
         position: plinth.p,
         done: got,
         icon,
-        tip: `<b>Treasure plinth ${plinth.i + 1}</b><br>${status}`,
+        tip: `<b>宝藏基座 ${plinth.i + 1}</b><br>${status}`,
     };
 }
 

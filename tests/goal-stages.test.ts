@@ -230,16 +230,16 @@ describe('the second ending as stages', () => {
         const goals = view(setup({ ascended: true, active: [true, false], open: [true, false] }));
         expect(labels(goals, 'ENDGAME2')).toEqual([
             'Crossroads High',
-            'High Heroes',
+            '高空 英雄',
             'The First Way',
-            'High Mirrors',
+            '高空 魔镜',
             'The Second Way',
             'Antipode High',
             'laser_pointer',
             'all_together_now',
         ]);
         expect(dones(goals, 'ENDGAME2')).toEqual([true, true, true, false, false, false, false, false]);
-        expect(activeLabels(goals, 'ENDGAME2')).toEqual(['High Mirrors']);
+        expect(activeLabels(goals, 'ENDGAME2')).toEqual(['高空 魔镜']);
     });
 
     test("a tower is done once active, its Way once the tower's hub Freezer is open", () => {
@@ -282,10 +282,10 @@ describe('the second ending as stages', () => {
     test('a place is named once its area shows and a level once it is not under fog', () => {
         const goals = view(setup({ ascended: true }), { areaShown: false, hiddenLevels: [2] });
         expect(labels(goals, 'ENDGAME2')).toEqual([
-            'High Heroes',
-            'Way to the High Heroes sign',
-            'High Mirrors',
-            'Way to the High Mirrors sign',
+            '高空 英雄',
+            '通往高空 英雄告示牌的路线',
+            '高空 魔镜',
+            '通往高空 魔镜告示牌的路线',
             'all_together_now',
         ]);
         expect(endingOf(goals, 'ENDGAME2').fogged).toBe(true);
@@ -294,9 +294,9 @@ describe('the second ending as stages', () => {
     test("a Way is named by its area while the area is named, else by its tower's sign", () => {
         const goals = view(setup({ ascended: true }), { namedAreas: [SECOND_WAY_AREA] });
         expect(labels(goals, 'ENDGAME2')).toEqual([
-            'High Heroes',
-            'Way to the High Heroes sign',
-            'High Mirrors',
+            '高空 英雄',
+            '通往高空 英雄告示牌的路线',
+            '高空 魔镜',
             'The Second Way',
             'laser_pointer',
             'all_together_now',

@@ -1,125 +1,65 @@
-# Order of the Sinking Cost
+# Order of the Sinking Cost · 简体中文版
 
-An unofficial, spoiler-free progress viewer for *Order of the Sinking Star*. Point it at your save folder and it tells
-you what is left to do, what to play next and how to get there, without showing anything you haven't uncovered yet.
+《Order of the Sinking Star》的非官方、无剧透进度查看器，基于 [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost) 汉化。
 
-> **This project is 100% AI-made.** Claude (Anthropic), working in Claude Code, wrote every line of code and every doc.
-> It also did all the reverse engineering, purely from the shipped game, with no source code or official documentation:
-> - it decompiled the game binary in IDA to work out the save and data formats, the progression rules and mechanics
->   like dragon fire;
-> - it checked each finding against real save files.
->
-> A human directed, reviewed and tested the work, but wrote none of it. Expect the occasional confidently wrong guess
-> about game mechanics; reports are welcome.
+指定存档文件夹后，可查看尚未完成的内容、接下来能玩的关卡及解锁路线。存档只在浏览器本地读取，不会上传或修改。
 
-## What it shows
+[English upstream documentation](README.en.md) · [原项目](https://github.com/xPaw/order-of-the-sinking-cost)
 
-Open the viewer at [sinkingstar.xpaw.me](https://sinkingstar.xpaw.me/), then drag your save folder onto the page or
-use **Open save folder**. The folder is `%USERPROFILE%\Saved Games\Order of the Sinking Star`.
+## 使用方法
 
-- **Goals**: a ladder of what is left: the three endings in order, then the achievements (the towers
-  among them) and Completionist, each with a count ("23 left", "3 / 16"). The first goal not done is the current one, and the list
-  starts on it.
-- **The list**: the levels the selected goal still needs. Playable ones come first, then the ones you can't reach yet,
-  then the locked ones, ranked by what they open toward the goal and then by distance from your hero. Each says what it
-  leads to, such as "opens ice cage Heroes and Mirrors" or "unlocks greenhouse". Levels that are only one of several
-  routes and not on the cheapest one fold away under "N more on other routes". Chips narrow it by state, tower and
-  area.
-- **Unlock paths**: click anything locked (a level, tower, ice cage, ice gate or sign) and it shows the numbered chain
-  of levels to solve first, on the map and in the panel.
-- **Reasons**: a level you can't reach says why, for example "behind ice cage · Heroes and Mirrors",
-  "may need Mirrors", "needs the way up to High", "from High" or "no known route".
-- **Map**: the overworld's ground, sky and underworld, with your fog of war, your hero and the current level. It
-  shows the list's levels, by state or by their role for the goal (Required, One of several, Optional), and what is
-  left for the goal: towers, ice cages and gates with the signs that open them, teleporters, gold rooms, voice logs,
-  map scrolls and treasures.
-- **Sidebar**: the goals ladder, with the Antipode towers and teleporters toward Endgame and the sky towers toward Endgame High; ice cages and gates, teleporters, voice logs and treasures to find; progress per area; and stats the game tracks (rank, play time and more).
-- **Live**: with a live folder it re-reads the save every few seconds while you play, so you can keep it on a second
-  screen.
+下载已构建的单文件版本 `standalone.html`，用最新版 Chrome 或 Edge 打开。无需安装 Node.js 或游戏，也不需要联网下载页面资源。
 
-**Spoilers:** with No spoilers on, which is the default, nothing under your fog of war appears anywhere. That covers
-names, counts, totals, area labels, layers, tower names and achievements, as well as the mechanics named in tooltips.
-The fog comes from your own save, exactly as the game reveals it.
+1. 点击“打开存档文件夹”，或将文件夹拖到页面上。
+2. 选择存档目录，而非 Steam 游戏安装目录：
 
-Everything runs locally in your browser. Your save is only read, never uploaded or changed. The page contains no game
-files: only data derived from the game, such as level names, requirements and a top-down map.
+   ```text
+   %USERPROFILE%\Saved Games\Order of the Sinking Star
+   ```
 
-## How it works
+3. 保持“防剧透”开启。可点击目标或“全收集”查看关卡，点击关卡查看所需条件和解锁路线。
 
-- **Your save:**
-  - `Status.sokoban_status` gives each level's solved/entered flags, your rank, the ice cages and gates opened, the
-    achievements and the level you're in.
-  - `overworld.history` is the game's undo log. Replaying it gives the overworld's current state (gates, rocks,
-    lilies, water, monsters, your skill) and every position your hero has stood on.
-- **Level state:** each level is solved, partly solved, entered, unlocked, not reachable yet or locked. The unlock
-  rules (level requirements, "any of" requirements, ice cages and gates, signs that need a rank, tower or gold rooms,
-  dropdowns, towers) come from the game's level data and were checked against the game's own code.
-- **Required or Optional:** first decided once, at build time, by walking the world from a new game's start and
-  opening the ice cages and gates it meets, round by round. A level is marked Optional only when the walk proves you
-  can finish without it. When in doubt, it stays Required. Per goal, a level is then Required when every route to the
-  goal needs it, One of several when only some do, and Optional when none does.
-- **Reachability:** a flood fill over the overworld's 3D grid. It models:
-  - walls and floors, rocks at their current places, lilies (on a river, along the whole loop they drift), fences;
-  - gates driven by switches, once rocks or other objects can be pushed onto every switch, and ice cages and gates;
-  - water surfaces, where a hero drowns unless something holds the hero up at the surface;
-  - elevators, and teleporters you have discovered;
-  - falls from sky ledges into the places below them, so a level reached only that way says it needs the sky;
-  - dragon fire and goblin attacks, which hold a hero with the Protection skill (from wardrobes) over water.
+页面初次打开时显示“示例：新游戏”，这是示例状态，不是已读取你的存档。若文件夹选择器受到浏览器或嵌入页面限制，可拖入文件夹，或选择“读取一次”。单次读取模式不会自动更新进度，需要重新打开文件夹。
 
-  It starts from everywhere your hero has stood, every level you've entered, every activated area pin and every
-  discovered teleporter. Anywhere you've been counts as reachable, however you got there.
-- **Goals and unlock paths:** a search over the AND/OR graph of levels, ice cages and gates, signs, towers, gold rooms
-  and ranks gives every unlock path; each goal's levels and roles are read off it. Requirements can form loops, and the
-  search handles them.
+## 汉化范围
 
-The details are in [docs/](docs/):
-- [WORLD.md](docs/WORLD.md), [ENTITIES.md](docs/ENTITIES.md), [MOVEMENT.md](docs/MOVEMENT.md) and
-  [SKILLS.md](docs/SKILLS.md): how the game is put together;
-- [PROGRESSION.md](docs/PROGRESSION.md) and [STATE.md](docs/STATE.md): progression and the saved state;
-- [VIEWER.md](docs/VIEWER.md): reachability and the viewer's model;
-- [SAVES.md](docs/SAVES.md), [GAMEDATA.md](docs/GAMEDATA.md) and [DATAFILES.md](docs/DATAFILES.md): the save and data
-  formats;
-- [UNCONFIRMED.md](docs/UNCONFIRMED.md): open questions.
+- 界面按钮、筛选、目标、地图标记、统计、动态解锁提示、可访问性标签及读取错误提示。
+- 区域名使用游戏 `data/strings/s-cn.localization` 的官方简体中文文本，称号也与该文件一致。
+- 关卡保留内部英文名称，如 `heroes1_1`，用于与存档和原攻略对应；原项目没有游戏中的中文关卡标题可供映射。
+- 地图底图中的英文美术字保持原样；叠加在地图上的区域标签及提示已汉化。
+- 高塔组合保留 H/M/S/B 字母，分别表示英雄、魔镜、飞石和光束发射器。成就标题为本查看器译名，尚未核对 Steam 官方中文成就标题。
+- 防剧透规则沿用上游：开启时，迷雾中的名称、数量、区域、层级、高塔、成就及未发现机制均按存档状态隐藏。主动点击“揭示”或关闭“防剧透”会显示更多内容。
 
-## Limitations
+## 功能与局限
 
-- **Reachability is approximate.** The model walks, falls, takes elevators and pads, opens ice cages, ice gates and
-  switch gates, and follows a few planned tricks: a rock pushed into water as a bridge, a skipping stone the Wizard
-  swaps onto (riding a lily too), a magic mirror alone in its room, and the Beamcaster powers a hero standing in a beam
-  uses (walking through walls, jumps, double steps, squeezing past fences, opening a gate). It leaves out:
-  - **Pushing for real:** a push is checked one cell deep, but the pushed thing stays where it is. No pushing rows,
-    pulling, charming, transmuting or swapping with a dragon.
-  - **Mirrors turning things:** fire, beams and the Wizard's line stop at a mirror instead of turning, so no beam
-    lifts. Magic mirrors work only alone in their room.
-  - **Moving things:** a lily on a river counts as everywhere on its loop at once, so timing is not checked; rovers,
-    goblins that move, rivers that change course, gates shutting on whatever stands in them.
-  - **The endings' way in:** the first way into the sky and into the underworld are not known in full. The plans
-    assume the sky after rank 1 and the underworld after the sky, and take the endgame rooms' gates from the level
-    data.
+支持目标进度、关卡状态、地图、解锁路线、收集品及区域完成度。支持持续读取的浏览器会定时刷新存档；Firefox、Safari 或受限环境可能只能读取快照。
 
-  A level the model can't reach shows under "Not reachable yet" with its reason; that doesn't mean it is impossible.
-  Required levels are listed whatever the model thinks of them.
-- **Required leans Required:** if the model misses a route, a level looks Required rather than Optional. It errs the
-  other way only where the model walks somewhere the game doesn't allow. A tower needs only some of its levels, so its
-  levels read "One of several".
-- **Live updates:**
-  - In Chrome and Edge, a folder opened with the picker or dragged onto the page stays live.
-  - Inside an embedded page the folder picker is blocked, so drag the folder onto the page instead.
-  - In Firefox and Safari a save loads as a one-time snapshot; reopen it to update.
-- **Game updates:** an update that changes the save formats or the level data
-  needs the data pipeline re-run, and possibly reader changes.
-- **Names:** level names are the game's internal ones. Area names come from the game's English text.
-- **Desktop only:** it works in small desktop windows (down to about 820 px wide) and with trackpads and touch, but it
-  isn't laid out for phones.
+可达性是近似推算，未完整模拟所有游戏机制。“暂时无法到达”不表示游戏中一定无法到达。游戏更新改变存档格式或关卡数据后，需要重新生成数据并重新验证。布局以桌面浏览器为主。
 
-## Building
+上游说明：原项目的代码和逆向分析由 AI 完成，并经人类指导、审阅及测试，仍可能误判游戏机制。本汉化也使用 AI 辅助，不代表游戏官方。
 
-The page is built from `src/` with [Vite+](https://viteplus.dev/), installed locally, into `dist/`:
-`index.html` with its script, stylesheet and images in `assets/`. It needs data generated from your own
-copy of the game with `npm run data`, and the map images in `src/assets/`. See
-[scripts/README.md](scripts/README.md) for the pipeline and for `npm run dev`, `npm run build`, `npm test`,
-`npm run typecheck`, `npm run lint` and `npm run deploy`.
+## 从源码构建
 
-## License
+需要 Node.js 24 和 npm。使用自己拥有的游戏文件；不要把完整游戏语言包、关卡包或个人存档提交到仓库。
 
-[MIT](LICENSE)
+```powershell
+npm ci
+$env:SOKO_GAME = 'E:\steam\steamapps\common\Order of the Sinking Star'
+npm run data
+npm run build:standalone
+```
+
+生成数据至少需要游戏的 `data/levels.package` 和 `data/strings/s-cn.localization`；已提交的地图、图标及 schema 由上游提供。首次 `npm run data` 的房间搜索可能耗时数分钟。
+
+- `npm run dev`：本地开发预览，地址为 `http://127.0.0.1:8765/`。
+- `npm run build`：生成可静态托管的 `dist/`。资源采用相对路径，支持部署到 GitHub Pages 的仓库子目录。
+- `npm run build:standalone`：另生成 `dist/standalone.html`，将脚本、样式、地图和图标打包为单个文件，可直接打开。
+- `npm test -- --run`、`npm run typecheck`、`npm run lint`：运行测试和检查。有些上游测试需要真实存档，仅在设置 `SOKO_SAVES` 时运行。
+
+详细生成流程见 [scripts/README.md](scripts/README.md)，技术文档保留英文。`npm run deploy` 及 `wrangler.jsonc` 为上游 Cloudflare 部署配置，发布到自己的站点前应改为自己的配置。
+
+## 许可与来源
+
+代码沿用 [MIT 许可证](LICENSE)，保留原作者 Pavel Djundik 的版权声明。允许在遵守许可证的前提下修改、发布和再分发。本汉化仓库不包含游戏可执行文件、完整语言包、关卡包或玩家存档；构建网页只嵌入运行所需的派生数据、地图和简短显示名称。
+
+游戏名称及相关内容归各自权利人所有。此工具及其汉化与游戏开发商、发行商无隶属关系。

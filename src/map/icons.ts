@@ -117,9 +117,9 @@ export const roleDot = (role: Role | null | undefined): string =>
 
 /** Per role, its label and marker colour. */
 export const ROLES = {
-    req: ['Required', '#f08a5d'],
-    one: ['One of several', '#c6d86a'],
-    optional: ['Optional', '#b39ddb'],
+    req: ['必需', '#f08a5d'],
+    one: ['多选其一', '#c6d86a'],
+    optional: ['可选', '#b39ddb'],
 } satisfies Record<string, [label: string, color: string]>;
 
 // a role's badge as an image of its shape in its colour, in the 16 unit box the icons use

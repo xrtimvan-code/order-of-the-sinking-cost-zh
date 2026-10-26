@@ -43,7 +43,7 @@ export function parseStatus(buffer: Uint8Array | ArrayBuffer): Status {
     const reader = new Reader(buffer);
     const version = reader.u32();
     if (version < 5 || version > 33) {
-        throw new Error(`campaign status version ${version} is not supported (expected 5..33)`);
+        throw new Error(`不支持存档状态版本 ${version}（支持 5..33）`);
     }
 
     const status: Status = {

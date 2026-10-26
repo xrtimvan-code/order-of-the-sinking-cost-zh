@@ -43,24 +43,24 @@ function context({ fromSky, skyShown, bumped = [], gateShown = true }: Stub): Wh
 }
 
 test('a pocket entered only by a drop from a sky ledge is "from High" once the sky shows', () => {
-    expect(whyText(context({ fromSky: true, skyShown: true }), 0)).toBe('from High');
+    expect(whyText(context({ fromSky: true, skyShown: true }), 0)).toBe('从高空进入');
 });
 test('under fog the sky is not named, and the level is not reachable from where the hero has been', () => {
-    expect(whyText(context({ fromSky: true, skyShown: false }), 0)).toBe('not reachable from where you have been');
+    expect(whyText(context({ fromSky: true, skyShown: false }), 0)).toBe('无法从已到访位置到达');
 });
 test('a pocket with no way in at all has "no known route"', () => {
-    expect(whyText(context({ fromSky: false, skyShown: true }), 0)).toBe('no known route');
+    expect(whyText(context({ fromSky: false, skyShown: true }), 0)).toBe('暂无已知路线');
 });
 test('a pocket whose only gate is one the level unlocks says so', () => {
     const text = whyText(context({ fromSky: false, skyShown: true, bumped: [0] }), 0);
-    expect(text).toBe('only behind an ice cage it unlocks');
+    expect(text).toBe('已知入口仅位于该关卡自身解锁的冰笼后方');
 });
 test('a gate the level unlocks gives way to the sky entry', () => {
-    expect(whyText(context({ fromSky: true, skyShown: true, bumped: [0] }), 0)).toBe('from High');
+    expect(whyText(context({ fromSky: true, skyShown: true, bumped: [0] }), 0)).toBe('从高空进入');
     const hiddenSky = whyText(context({ fromSky: true, skyShown: false, bumped: [0] }), 0);
-    expect(hiddenSky).toBe('not reachable from where you have been');
+    expect(hiddenSky).toBe('无法从已到访位置到达');
 });
 test('a gate under fog is not named', () => {
     const text = whyText(context({ fromSky: false, skyShown: true, bumped: [0], gateShown: false }), 0);
-    expect(text).toBe('no known route');
+    expect(text).toBe('暂无已知路线');
 });

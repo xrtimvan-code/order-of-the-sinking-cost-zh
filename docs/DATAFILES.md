@@ -62,7 +62,7 @@ The current-area rule applied at each overworld Level_Entry (the rule itself is 
 [Level areas (viewer)](VIEWER.md#level-areas-viewer)).
 
 - `rule`: the rule text.
-- `areas`: `{<local_area_name>: {pin, pin_id, local_area_name, display_name (en), local_area_image, position,
+- `areas`: `{<local_area_name>: {pin, pin_id, local_area_name, display_name (Simplified Chinese), local_area_image, position,
   map_label_marker, map_label_position, local_area_markers: [Marker pid], local_area_boxes: [{p, q, s, e, f, w}],
   level_count, level_count_with_fallback}}`. A box: `p` position, `q` orientation quaternion (x, y, z, w), `s` scale,
   `e` `props.box_extents`, `f` `float_parameter` (priority, lower wins), `w` the wrap widths used for x and y (the grid
