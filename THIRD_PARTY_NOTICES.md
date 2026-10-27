@@ -6,6 +6,12 @@ This project is derived from [xPaw/order-of-the-sinking-cost](https://github.com
 
 本项目基于上述上游项目。原作者署名、MIT 授权声明和 Git 历史均予保留。中文本地化与分发构建的修改由 xrtimvan-code 维护，并在具备授权的范围内以 MIT 许可提供。
 
+## AI-generated localization and documentation / AI生成的翻译与文档
+
+OpenAI Codex generated this edition's interface translations and new or revised documentation, with revisions based on user feedback. These contributions were not written by a human translator or documentation author. Official game localization and existing upstream materials retain their separate attribution.
+
+本版本的界面翻译及新增、修订文档由OpenAI Codex生成，并根据用户反馈修改，并非人工翻译或撰写。游戏官方文本与上游原有材料保留各自的来源署名。
+
 ## Game-related materials
 
 《沉星之序》（*Order of the Sinking Star*）is a game by Thekla, Inc. Game names, trademarks, artwork, localization text, and other game materials remain subject to their respective rights. This repository is not affiliated with or endorsed by the game's developers, publishers, or the upstream viewer author.
