@@ -5,7 +5,7 @@ with every version the game reads. Types are in [Notation](README.md#notation).
 
 ## Files and versions
 
-The saves live in `%USERPROFILE%\Saved Games\Order of the Sinking Star\`.
+The saves live in `C:\Users\你的用户名\保存的游戏\Order of the Sinking Star\`.
 
 | File | Written | Read | Changes between versions |
 |---|---|---|---|

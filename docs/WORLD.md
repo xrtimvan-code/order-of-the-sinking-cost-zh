@@ -34,7 +34,7 @@ Saves are not in the game folder ([Levels, level sets and saves](#levels-level-s
 - `Settings.story_tag` names story levels: `overworld`, `skipping_stones`, `skipping_pals`, `promesst1`..`3`, `magnitudes_intro`.
 - Boats exist only in 5 story levels (`skipping_stones`, `skipping_pals`, `end3_skipping_1`, `end3_skipping_red`, `skipping_near_beams_v2`). `Boat.identity` picks a dialogue speaker. The overworld has none.
 
-Saves live in `%USERPROFILE%\Saved Games\Order of the Sinking Star\`: `settings.menu_state` plus one folder per
+Saves live in `C:\Users\你的用户名\保存的游戏\Order of the Sinking Star\`: `settings.menu_state` plus one folder per
 campaign. A campaign folder holds `Status.sokoban_status` (rank, achievements, per-level flags, opened Freezers,
 counters) and one `<level>.history` per level with its kept undo state. Saves go through a save thread that writes
 `_temp_<name>` and then replaces the target. A level's `.history` is deleted when the level is won. Status names the

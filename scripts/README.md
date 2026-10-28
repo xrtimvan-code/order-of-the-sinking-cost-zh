@@ -11,7 +11,7 @@ runs the tests, `npm run typecheck` type-checks the TypeScript modules, `npm run
 built-in type stripping).
 
 Game folder: `--game DIR`, else `$SOKO_GAME`, else the Steam install. Saves: `$SOKO_SAVES`, else
-`%USERPROFILE%\Saved Games\Order of the Sinking Star`.
+`C:\Users\你的用户名\保存的游戏\Order of the Sinking Star`.
 
 ## Pipeline, in run order
 

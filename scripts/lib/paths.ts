@@ -2,7 +2,7 @@
 //
 // Game folder: --game, else $SOKO_GAME, else found through the Steam install (registry, then every library in
 // libraryfolders.vdf), else the default Steam path. Saves: $SOKO_SAVES, else
-// %USERPROFILE%\Saved Games\Order of the Sinking Star.
+// C:\Users\你的用户名\保存的游戏\Order of the Sinking Star.
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join, normalize, resolve } from 'node:path';

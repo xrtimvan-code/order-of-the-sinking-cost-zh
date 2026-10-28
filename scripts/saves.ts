@@ -1,4 +1,4 @@
-// The game's save folder: $SOKO_SAVES, else %USERPROFILE%\Saved Games\Order of the Sinking Star
+// The game's save folder: $SOKO_SAVES, else C:\Users\你的用户名\保存的游戏\Order of the Sinking Star
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 

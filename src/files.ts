@@ -150,7 +150,7 @@ export async function addFiles(list: SaveFile[]): Promise<void> {
 }
 
 /** Where the game keeps its saves. */
-export const SAVE_PATH = '%USERPROFILE%\\Saved Games\\Order of the Sinking Star';
+export const SAVE_PATH = 'C:\\Users\\你的用户名\\保存的游戏\\Order of the Sinking Star';
 
 const DEMO_DIR = 'No save loaded';
 

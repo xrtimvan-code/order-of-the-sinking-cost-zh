@@ -2,7 +2,7 @@
 
 ## Upstream viewer software
 
-This project is derived from [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost), by Pavel Djundik / xPaw. The initial localization baseline is upstream commit `c46e073`. Upstream history and the original MIT copyright and permission notice are retained. See `LICENSE` and `README.upstream.md`.
+This project is derived from [xPaw/order-of-the-sinking-cost](https://github.com/xPaw/order-of-the-sinking-cost), by Pavel Djundik / xPaw. The initial localization baseline is upstream commit `c46e073`. Upstream history and the original MIT copyright and permission notice are retained. See `LICENSE` and `readme.md`.
 
 本项目基于上述上游项目。原作者署名、MIT 授权声明和 Git 历史均予保留。中文本地化与分发构建的修改由 xrtimvan-code 维护，并在具备授权的范围内以 MIT 许可提供。
 
